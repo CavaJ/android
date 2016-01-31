@@ -6,7 +6,7 @@ powerful customized video player based on Vitamio library. You can start develop
 AnimeManiaGridFragment.java class. The episode lists are loaded using xml files. Sample bunny.xml file has been
 provided.
 
-**
+
 public class AnimeManiaGridFragment extends Fragment {
 
 	private Integer[] customImages = { R.drawable.bunny, R.drawable.bunny,
@@ -16,23 +16,23 @@ public class AnimeManiaGridFragment extends Fragment {
 			R.string.bunny };
 			
 			// Other stuff
-} **
+} 
 
 Do not forget to add your own xml file urls to Constants.java file:
 
-**
+
 public class Constants {
 
 	  //URLs can be encrypted by app signature, look at the methods in Utils class
 	  public static final String URLBunny = "your_direct_link_to_xml_file";
 	  
 	  //different urls could be added here.
-} **
+}
 
 In AnimeListActivity.java class you can load different xml files based on click position of grid_item's from the
 previous activity.
 
-**
+
 public class AnimeListActivity extends ActionBarActivity {
 
     //Some initializations
@@ -63,6 +63,6 @@ public class AnimeListActivity extends ActionBarActivity {
 		} // switch
 		
 		//Some other stuff
-} **
+} 
 
 More sample projects will be added. Stay tuned!
