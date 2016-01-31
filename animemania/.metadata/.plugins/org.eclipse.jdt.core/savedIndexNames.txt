@@ -1,0 +1,9 @@
+INDEX VERSION 1.127+C:\dev\android\projects\animemania\.metadata\.plugins\org.eclipse.jdt.core
+1629331550.index
+3515282563.index
+3332947456.index
+1849469807.index
+3155646297.index
+3860919240.index
+1206089834.index
+3418387735.index

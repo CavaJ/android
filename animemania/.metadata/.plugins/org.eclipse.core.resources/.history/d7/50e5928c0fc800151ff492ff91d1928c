@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Аниме Мания</string>
+    <string name="action_overflow">Еще&#8230;</string>
+    <string name="hello_world">Привет, мир!</string>
+    
+    <string name="about_developer">Разработчик: Example Developer</string>
+    <string name="about_developer_email">Электронная почта: example@example.com</string>
+    <string name="app_version">Версия 1.0</string>
+    
+    
+    <string name="casper">Каспер</string>
+    <string name="louie">Луи</string>
+    <string name="janggeumsdream">Мечта Джанг Кымгана</string>
+    
+    <string name="cache_cleared">Кэш Очищено Успешно!</string>
+    <string name="action_clear_cache">Очистить Кэш</string>
+    <string name="sharing_error">Никакие Приложения Не Найдено Для Совместного Использования!</string>
+    <string name="back_clicked">Пожалуйста, Нажмите \"BACK\" Снова, Чтобы Выйти!</string>
+    <string name="action_item_source_1">Источник 1</string>
+    <string name="action_item_source_2">Источник 2</string>
+    
+    <string name="promotion_dialog_title">Пример для рекламы приложений</string>
+    <string name="promotion_dialog_later_button_title">Позже</string>
+    <string name="promotion_dialog_install_button_title">Установить</string>
+    
+    <string name="action_search">Поиск</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_rate">Оценить!</string>
+    <string name="action_other_apps">Другие Приложения</string>
+    <string name="action_extra_settings">Настройки</string>
+    <string name="action_about">О Приложении</string>
+    <string name="action_exit">Выход</string>
+    <string name="action_refresh_list">Обновить Список</string>
+    
+    
+    <string name="loading_error_dialog_title">Ошибка Загрузки&#8230;</string>
+    <string name="loading_error_dialog_message">Соединение с Интернетом медленное или не существует.</string>
+    <string name="loading_error_dialog_retry_button_title">Повторить</string>
+    <string name="loading_error_dialog_cancel_button_title">Отменить</string>
+    
+    <string name="rate_dialog_title">Оценить?!</string>
+    <string name="rate_dialog_message">Если вам нравиться использовать \"Аниме Мания\", пожалуйста, 
+        найдите время, чтобы оценить его. Спасибо за вашу поддержку!
+        </string>
+    <string name="rate_dialog_later_button_title">Позже</string>
+    <string name="rate_dialog_rate_button_title">Оценить!</string>
+    
+    
+    <string name="video_activity_error">К сожалению, это видео не могут быть воспроизведены.
+        \nПожалуйста, попробуйте другой источник.
+    </string>
+    <string name="episodelist_activity_error">Пожалуйста, проверьте соединение с интернетом!</string>
+    <string name="cartoon_activity_error">Сервер занят, повторите попытку позже.</string>
+    
+    <string name="share_app_chooser">Поделитесь этим приложением с помощью</string>
+    <string name="share_subject">Проверьте этот андроид приложения! </string>
+    <string name="play_store_app_uri">https://play.google.com/store/apps/details?id=</string>
+    <string name="share_string">Величайший приложение для Android, доступен на Play Market, </string>
+    <string name="play_store_not_reached">Play Маркет не доступен!</string>
+    
+    <!-- start episode and season names -->
+    
+    <string name="casper_series_name">Каспер Эпизод</string>
+    
+    <string name="louie_series_name">Луи Эпизод</string>
+    
+    <string name="janggeumsdream_series_name">Джанг Кымган Эпизод</string>
+    
+    <!-- end episode and season names -->
+
+</resources>

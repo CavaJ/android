@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_bg_selector"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+ 
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/border"
+        android:layout_marginRight="5dip">
+ 
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:contentDescription="Cartoon Image" />
+ 
+    </LinearLayout>
+ 
+    
+    <!-- Title Of Cartoon (Song)-->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Cartoon Name"
+        android:layout_marginRight="40dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="1"
+        android:scrollHorizontally="true" 
+        android:textColor="@android:color/white"
+        android:typeface="sans"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
+        <!-- android:text="Rihanna Love the way you lie" -->
+        <!-- android:textColor="#040404" -->
+ 
+    <!-- Season (Artist) Name -->
+    <TextView
+        android:id="@+id/season"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:layout_marginRight="40dp"
+        android:textColor="@android:color/white"
+        android:textSize="12dp"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Season Name" />
+        <!-- android:text="Just gona stand there and ..." --> 
+        <!-- android:textColor="#343434" -->
+      
+        
+    <!-- Rightend Duration -->
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/title"
+        android:gravity="right"
+        android:text="5:45"
+        android:layout_marginRight="5dip"
+        android:textSize="12dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"/>
+ 
+    <!--  android:textColor="#10bcc9" 
+ 		  android:textColor="#006C6C"   
+    -->
+    
+     <!-- Rightend Arrow -->
+     <ImageView
+        android:id="@+id/image_view_more" 
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/arrow"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="Arrow" />
+ 
+</RelativeLayout>

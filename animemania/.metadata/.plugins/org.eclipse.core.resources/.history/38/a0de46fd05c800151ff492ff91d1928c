@@ -1,0 +1,289 @@
+package com.example.animemania.constant;
+
+public class Constants {
+
+	public static final String CACHE_DIR = "AnimeMania";
+
+	public static final String KEY_EPISODE = "episode"; // parent node
+	public static final String KEY_ID = "id";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_SEASON = "season";
+	public static final String KEY_DURATION = "duration";
+	public static final String KEY_THUMB_URL = "thumb_url";
+	public static final String KEY_VIDEO_URL = "video_url";
+	public static final String KEY_VIDEO_URL2 = "video_url2";
+
+	
+	  //encrypted URLs 
+	  public static final String URLCasper =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCxviQ6qzUNo23A6DmyAi5S";
+	  
+	  public static final String URLCorneil =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD17BbR+RsmnLaJpdE5c9odle6W17VxGPlKjjIArjJeDA==";
+	  
+	  public static final String URLJang =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCMJajEyBdgFutCle4WnlAIIRiB9KXpcBLVl5zobkrV9w==";
+	  
+	  public static final String URLLaLinea =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAZGr/IjhJaWsJTEgm0KY4T";
+	  
+	  public static final String URLMadJack =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDXHML2JHnrkHUF6RVsa64zK56H+S7wpQPHN/cbjSFczQ==";
+	  
+	  public static final String URLMagiNation =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBkuTN2mBIbJSrmG9cMRhntBTcbjudwVRp6lb+n3XdtVQ==";
+	  
+	  public static final String URLMinuscule =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCxzOxMecY9MRvJ3bUOqNLPcndiOkhQAJLEUYMtC+R05A==";
+	  
+	  public static final String URLOnePiece =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCiIc2m+V8qZzM5jKyk00mjD6z6FpEZ6B53NEOtwfOw0g==";
+	  
+	  public static final String URLPingu =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD8oDu90JJAESC5i5LNGtk1";
+	  
+	  public static final String URLPoppets =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCecNoPjTjZGoLuv6o2a0I4TFdlvcs1sStcLnBrU9/USQ==";
+	  
+	  public static final String URLSailorMoon =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBC4QEC82cKyqDeqJkdIvFzBTcbjudwVRp6lb+n3XdtVQ==";
+	  
+	  public static final String URLSheepInTheIsland =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHB11BKz4edJJ43PkwlYuK70R4txDdhiVyb/zVlwcswExA==";
+	  
+	  public static final String URLTheFlintstones =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD43OgAQOr7eFFEul4yCiWKk23p/35duHJVFYbRThji9Q==";
+	  
+	  public static final String URLTheJetsons =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDjswmCD4yaz1sZ7j24fp2JBTcbjudwVRp6lb+n3XdtVQ==";
+	  
+	  public static final String URLTheMask =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDj3c6CyuZ5NS9iP3SpO/Of";
+	  
+	  public static final String URLTheSmurfs =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDEzcWZsthE2L5nT+qro3hzcndiOkhQAJLEUYMtC+R05A==";
+	  
+	  public static final String URLTriplets =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHB5pjYL1sAN5ky+GQakmyrKD6z6FpEZ6B53NEOtwfOw0g==";
+	  
+	  public static final String URLTrollz =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBjoHuCwNHCwWjA3vS9RuqL";
+	  
+	  public static final String URLYogiBear =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAn8dSXCsNKZpX6ZilyM+yZD6z6FpEZ6B53NEOtwfOw0g==";
+	  
+	  public static final String URLDragonBall =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAR4TP636EDI92OKANIoiB/BTcbjudwVRp6lb+n3XdtVQ==";
+	  
+	  public static final String URLLouie =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDzcHBm3qJQf3HtnextQo8R";
+	  
+	  public static final String URLArthur =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCgguvqcxLvzJKEFKysn8sH";
+	  
+	  public static final String URLBakugan =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCy4BCuB1Qq2btVoBy/WbVv";
+	  
+	  public static final String URLBerryBitty =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHC4w+JLBjpSExUBXIr2pREsfZn8u88jH2XeZDxXArVe7w==";
+	  
+	  public static final String URLBeybaldeMetalFusion =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAtppEzjjeCpclqqbF/6iz9V6vPYrB5eY2kMHIFOmqleA==";
+	  
+	  public static final String URLBrave10 =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCBKHn5eSqWclx9qoIfs9QF";
+	  
+	  public static final String URLChloesCloset =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBLlqeoKGUxdr/oRaP8QJFLvPDWMbwNWktNSqAERJU1Kw==";
+	
+	  public static final String URLChuckAndFriends
+	  	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHApv76zhaA55bgS0+p0pefWq7HqCyQyQelvH1rKJeXuWg==";
+	
+	  public static final String URLChuggington
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD8+siOg1N/cvL/UHCEkhdXTFdlvcs1sStcLnBrU9/USQ==";
+	
+	  public static final String URLCityOfFriends
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDQh9N3PYYTCByOoMC2dvCb1z+cyeIMTN+ukNUgJrm3tw==";
+	
+	  public static final String URLDeathNote
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAYriqv2hbs2j0qabSCQwH1cndiOkhQAJLEUYMtC+R05A==";
+	 
+	  
+	public static final String URLDexHamilton
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDlhQDNaMOQbE5HJEQiAYU1TFdlvcs1sStcLnBrU9/USQ==";
+
+	public static final String URLDibo
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCpe6RCIUwasxqM7onpSnJAGfb8VKWfTfL4fl/3LoVRIw==";
+
+	public static final String URLDinosaurTrain
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCg67jwTYCWFiMMGL7SUVYE1BqqAC9iXYXrEQQnNGZv/g==";
+
+	public static final String URLDiveOllyDive
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHC5VaJ6laNepRCRPV8aTcmMvPDWMbwNWktNSqAERJU1Kw==";
+
+	public static final String URLDougie
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHB8ldPed5xc36E/c2Tcbt6G";
+
+	public static final String URLEmilie
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCX9117oaBwURkQf4ZuK0H7";
+
+	public static final String URLErkyPerky
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD5F2ckya5I3He3S/YIeN1jcndiOkhQAJLEUYMtC+R05A==";
+
+	public static final String URLEverythingsRosie 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHC65jem75pxqtkrZ25s1u1nY7UqqWreIef4HN4QiNq4iA==";
+
+	public static final String URLFiremanSam
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAEsKV/IJhLt+IxK1UDHwhWBTcbjudwVRp6lb+n3XdtVQ==";
+
+	public static final String URLFlashDash 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDGSfYtVfMIoMeU1ZRJXLP3vPDWMbwNWktNSqAERJU1Kw==";
+
+	public static final String URLGgoFootball
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDUi2WLsUo8Q5aGetkoffbiTFdlvcs1sStcLnBrU9/USQ==";
+
+	public static final String URLGormiti
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHA+Ss3us+3tGtutQKbyESmU";
+
+	public static final String URLGreenSquad
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAcb81w52F8Yk2t1Q/BJ3fQBTcbjudwVRp6lb+n3XdtVQ==";
+
+	public static final String URLIamAnAnimal
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAajCivMl/h0LQOpj2Iff/tTFdlvcs1sStcLnBrU9/USQ==";
+
+	public static final String URLJibberJabber
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCSxnGJa+YGHlzYqpiXWH3TvPDWMbwNWktNSqAERJU1Kw==";
+
+	public static final String URLJusticeLeague
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHATgqMD8OYM4TdlNTffCoijjhkip4CVOxcCmfSUqA5Lxg==";
+
+	public static final String URLLaurasStar
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHA3NeirsjXy70SO8Fn87ZsBBTcbjudwVRp6lb+n3XdtVQ==";
+
+	public static final String URLLeon 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCVgg25W+TQ1grmoTw/85vR";
+
+	public static final String URLLittleBrownBear
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDIA3R7m6vwltr8il6aoRpXZvLRelQz/fLOq9DxD8NPKg==";
+
+	public static final String URLLittleCharleyBear
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHA+n4eO9lhKL4HeaXy7RMSv8EydyOW0Fw/ZnEqvMAvDwQ==";
+
+	public static final String URLLOSE 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCIcNV2+odphkVSCPepxQv0";
+
+	public static final String URLLulu 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHApjCH0PRuC/20tqBvS6Tld";
+
+	public static final String URLMartine
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBHSh/PwCgfoN3poPWRLkTg";
+	
+	public static final String URLMaxSteel
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHC4VD880AU48FxobrE6cUPvD6z6FpEZ6B53NEOtwfOw0g==";
+
+	public static final String URLMaya
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBs5rJG7e5kbs1LB5SQUcziBTcbjudwVRp6lb+n3XdtVQ==";
+
+	public static final String URLMillyMolly 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAOvKsJkRZTlaaraQP5xdzpBTcbjudwVRp6lb+n3XdtVQ==";
+
+	public static final String URLMonsierLoutre
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDpG+q+HZfw2g8RwxbEwU1fLY3vJBY3qQey0s+mVolEGQ==";
+
+	public static final String URLMonsuno 
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDdugUhcrZAk/J1TjiwTEQF";
+	
+	public static final String URLMrMoon
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAyhwZNRCFk6vdZaBCs5gRk";
+	
+	public static final String URLMyBigFriend
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAMP751OFmNAB0XBdjB7BYrTFdlvcs1sStcLnBrU9/USQ==";
+	
+	public static final String URLNoonbory
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDu0FyJbtyhKPswSokWOQvPD6z6FpEZ6B53NEOtwfOw0g==";
+	
+	public static final String URLOscar
+		= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBhGkKVBDpAMjSxGg6JRifxTFdlvcs1sStcLnBrU9/USQ==";
+	
+	public static final String URLPatchPillows
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBCvvYppb+rsbEnXz4WFXt4vPDWMbwNWktNSqAERJU1Kw==";
+	
+	public static final String URLPimAndPom
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBXkq8yhEPOfvBCa/o6A8kZcndiOkhQAJLEUYMtC+R05A==";
+	
+	public static final String URLPippi
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDIjS7lo0wAe+7OVdFNedzBHJfYGcmAIDBnQ+CiP73i9g==";
+	
+	public static final String URLPoppyCat
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAhTuB526rzNcie2VAHcWTpD6z6FpEZ6B53NEOtwfOw0g==";
+	
+	public static final String URLPromoTransformers
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDb/WeFjkdJnTU0uJoHrxmdNKFCRwzHgdi4uREo+MrSZExXZb3LNbErXC5wa1Pf1Ek=";
+	
+	public static final String URLPunky
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCF0UnQl1WIOAGAUiwmwsa4";
+	
+	public static final String URLRoary
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAsfGgixw0H8odbFuDvzr7vBTcbjudwVRp6lb+n3XdtVQ==";
+	
+	public static final String URLSaladin
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHC2ULR/FkgfT5ZS5JhDizbv";
+	
+	public static final String URLShaunTheSheep
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHB2NIckcs/gg9H6d9SZ46ijhDHsuaPO67o/yrWlbe0YNw==";
+	
+	public static final String URLStellaAndSam
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCk5z5CgufY/LcMY0aYIRdnvPDWMbwNWktNSqAERJU1Kw==";
+	
+	public static final String URLStellina
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBmutoKSLa89wXgidj53CLPD6z6FpEZ6B53NEOtwfOw0g==";
+	
+	public static final String URLTheGees
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAnBxqbJoNBJv9HyruP2lfF";
+	
+	public static final String URLTheLittlePrince
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCP0aQ6hb9AF6nVu9n61jrGmkS5Y2Y1i7UYr5VgdAyZ9w==";
+	
+	public static final String URLTheSmallGiant
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCl2Qj5W9uTbk49fUCu+0KP5TNYYPQGtxzxdUgLGQUkkA==";
+	
+	public static final String URLTheWotwots
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDcqFcfIDF/SfAcrLyzdrzCBTcbjudwVRp6lb+n3XdtVQ==";
+	
+	public static final String URLThomasAndFriends
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD69asovDtb8e1kBWGG3RyIMnTHDk4aPMwvro9PBOb9xQ==";
+	
+	public static final String URLTicketyToc
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHArgbgAkLad4qxSZg72dSl2BTcbjudwVRp6lb+n3XdtVQ==";
+	
+	public static final String URLTinyPlanets
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBzZCaWdGRRv8RC8VpKCH8DTFdlvcs1sStcLnBrU9/USQ==";
+	
+	public static final String URLTotoTrouble
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBw8WEuSXg4+3/jMqO0tISMTFdlvcs1sStcLnBrU9/USQ==";
+	
+	public static final String URLTrotro
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAjyKmDUfH6IYPd8LdY/E97";
+	
+	public static final String URLVroomiz
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCm55o9TitrxJ1m+rAW0aPT";
+	
+	public static final String URLWildKratts
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCOjKIe4xVwDsIylNvlLu/xBTcbjudwVRp6lb+n3XdtVQ==";
+	
+	public static final String URLWoodlies
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDwGEkVP10sjn0ifOM6rS+1D6z6FpEZ6B53NEOtwfOw0g==";
+	
+	public static final String URLWoofy
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHDLA+z7y9CAefEcDJPK65D3";
+	
+	public static final String URLYummuToonies
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAHjj2u/ToIjYYoS/ltE3pcvPDWMbwNWktNSqAERJU1Kw==";
+	
+	public static final String URLZekesPad
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHAyMAKhA407oD9aDHj9sGVUD6z6FpEZ6B53NEOtwfOw0g==";
+	
+	public static final String URLSpiderMan
+	= "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHBFyBqR0FwMi9iKs9BVluSgcndiOkhQAJLEUYMtC+R05A==";
+	
+} // class Constants

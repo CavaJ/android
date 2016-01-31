@@ -1,0 +1,41 @@
+1420740776678	Rename package 'com.touchandjoy.android.cartoons'
+1420741150320	Rename type 'VideoActivity'
+1420741322108	Rename type 'LazyAdapter'
+1420741400565	Rename type 'CustomAdapter'
+1420741527887	Rename type 'ConnectionDetector'
+1420741603691	Rename type 'About'
+1420741782078	Rename type 'AppRater'
+1420742085461	Rename type 'CartoonEpisode'
+1420742142059	Rename type 'EpisodeListActivity'
+1420742280988	Rename type 'CartoonActivity'
+1420742376263	Rename type 'CartoonFragment'
+1420742419506	Rename type 'CartoonSeries'
+1420742636453	Move compilation units
+1420742665479	Move compilation unit
+1420742712568	Move compilation unit
+1420742739542	Move compilation unit
+1420742774060	Move compilation units
+1420742854103	Move compilation units
+1420742946196	Move compilation unit
+1420749024595	Delete element
+1420749105950	Delete elements
+1420749165788	Delete element
+1420765061841	Rename resource 'card_base.xml'
+1420765086901	Rename resource 'card_bg.xml'
+1420765126563	Delete element
+1420765147719	Rename resource 'custom_list_item.xml'
+1420765182075	Rename resource 'gradient_bg.xml'
+1420765206534	Rename resource 'gradient_bg_hover.xml'
+1420765227824	Rename resource 'list_selector.xml'
+1420765238377	Delete element
+1420765261189	Delete elements
+1420765287797	Rename resource 'card_dragged.xml'
+1420765310360	Delete element
+1420765365742	Rename resource 'activity_cartoon.xml'
+1420765393111	Rename resource 'activity_episode_list.xml'
+1420765407016	Rename resource 'activity_video.xml'
+1420765428865	Rename resource 'fragment_cartoon.xml'
+1420765478760	Delete element
+1420765504336	Rename resource 'videobuffer.xml'
+1420766595024	Delete element
+1420767293407	Rename resource 'actionbar_title.xml'

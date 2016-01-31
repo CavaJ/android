@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Türkçe Çizgi Film Seyret</string>
+    <string name="action_overflow">Daha&#8230;</string>
+    <string name="hello_world">Selam Dünya!</string>
+    
+    <string name="about_developer">Geliştirici: Example Developer</string>
+    <string name="about_developer_email">E-posta: example@example.com</string>
+    <string name="app_version">Sürüm 1.0</string>
+    
+    
+    <string name="corneilandbernie">Corneil ve Bernie</string>
+    <string name="janggeumsdream">Jang Geum\'un Rüyası</string>
+    <string name="lalinea">Bay Meraklı</string>
+    <string name="madjackthepirate">Çılgın Korsan Jack</string>
+    <string name="magination">Magi-Nation</string>
+    <string name="poppetstown">Kukla Şehri</string>
+    <string name="sailormoon">Ay Savaşçısı</string>
+    <string name="sheepintheisland">Adadakı Kuzu</string>
+    <string name="theflintstones">Taş Devri</string>
+    <string name="thejetsons">Jetgiller</string>
+    <string name="themask">Maske</string>
+    <string name="thesmurfs">Şirinler</string>
+    <string name="triplets">Üçüzler</string>
+    <string name="trollz">Trollz</string>
+    <string name="yogibear">Ayı Yogi</string>
+    <string name="berrybittyadventures">Çilek Kız</string>
+    <string name="beyblademetalfusion">Beyblade Metal Fusion</string>
+    <string name="brave10">Brave 10</string>
+    <string name="chloescloset">Damlanın Dolabı</string>
+    <string name="chuckandfriends">Chuck ve Arkadaşları</string>
+    <string name="chuggington">Çufçuflar Diyarı</string>
+    <string name="cityoffriends">Bizim Mahalle</string>
+    <string name="deathnote">Ölüm Defteri</string>
+    <string name="dexhamilton">Dex Hamilton</string>
+    <string name="dibothegiftdragon">Hediyeci Ejderha Dibo</string>
+    <string name="dinosaurtrain">Dinozor Treni</string>
+    <string name="diveollydive">Okyanus Kaşifi Olly</string>
+    <string name="erkyperky">Öcük ile Böcük</string>
+    <string name="everythingsrosie">Rosie\'nin Dünyası</string>
+    <string name="firemansam">İtfaiyeci Sam</string>
+    <string name="flashanddash">Flash ve Dash</string>
+    <string name="ggofootball">Ggo Football</string>
+    <string name="gormiti">Gormiti</string>
+    <string name="greensquad">Yeşil Ekip</string>
+    <string name="iamananimal">Günün Hayvanı</string>
+    <string name="jibberjabber">Jibber ve Jabber</string>
+    <string name="justiceleague">Adalet Takımı</string>
+    <string name="laurasstar">Laura\'nın Yıldızı</string>
+    <string name="leon">Leon Aslan</string>
+    <string name="littlebrownbear">Kahverengi Ayıcık</string>
+    <string name="littlecharleybear">Ayıcık Bombo</string>
+    <string name="martine">Ayşegül</string>
+    <string name="maxsteel">Max Steel</string>
+    <string name="mayathebee">Arı Maya</string>
+    <string name="millymolly">Milly ve Molly</string>
+    <string name="monsieurloutre">Bay Susamuru</string>
+    <string name="monsuno">Monsuno</string>
+    <string name="mrmoon">Bay Ay</string>
+    <string name="mybigfriend">Kocaman Arkadaşım</string>
+    <string name="noonbory">Afacan ve Yedi Kafadar</string>
+    <string name="oscarsoasis">Oscar Çöllerde</string>
+    <string name="patchpillows">Yamalı Yastıklar</string>
+    <string name="pimandpom">Pim ve Pom</string>
+    <string name="pippilongstocking">Uzunçoraplı Pippi</string>
+    <string name="poppycat">Pisi Kedi Maceraları</string>
+    <string name="saladin">Selahaddin</string>
+    <string name="shaunthesheep">Koyun Shaun</string>
+    <string name="stellandsam">Stella ve Sam</string>
+    <string name="stellina">Stellina</string>
+    <string name="thegees">Gees</string>
+    <string name="thelittleprince">Küçük Prens</string>
+    <string name="thesmallgiant">Küçük Dev</string>
+    <string name="thewotwots">Wotwotlar</string>
+    <string name="thomasandfriends">Thomas ve Arkadaşları</string>
+    <string name="ticketytoc">Tickety Toc</string>
+    <string name="tinyplanets">Sevimli Gezegenler</string>
+    <string name="tototrouble">Afacan Toto</string>
+    <string name="wildkratts">Kratt Kardeşler</string>
+    <string name="yummytoonies">Leziz Şekiller</string>
+    <string name="zekespad">Zek\'in Dünyası</string>
+    <string name="spiderman">Örümcek Adam</string>
+    
+    
+    <string name="cache_cleared">Önbellek Başarıyla Temizlendi!</string>
+    <string name="action_clear_cache">Önbelleği Temizle</string>
+    <string name="sharing_error">Paylaşım İçin Hiçbir Uygulama  Bulunmadı!</string>
+    <string name="back_clicked">Çıkmak için tekrar BACK tuşuna tıklayınız!</string>
+    <string name="action_item_source_1">Kaynak 1</string>
+    <string name="action_item_source_2">Kaynak 2</string>
+    
+    <string name="promotion_dialog_title">Örnek Uygulama Tanıtımı</string>
+    <string name="promotion_dialog_later_button_title">Daha Sonra</string>
+    <string name="promotion_dialog_install_button_title">İndir</string>
+    
+    <string name="action_search">Arama</string>
+    <string name="action_share">Paylaş</string>
+    <string name="action_rate">Oy Ver!</string>
+    <string name="action_other_apps">Diğer Uygulamalar</string>
+    <string name="action_extra_settings">Ayarlar</string>
+    <string name="action_about">Hakkında</string>
+    <string name="action_exit">Çıkış</string>
+    <string name="action_refresh_list">Listeyi Yenile</string>
+    
+    <string name="loading_error_dialog_title">İndirme Hatası&#8230;</string>
+    <string name="loading_error_dialog_message">İnternet bağlantısı yavaş veya yok.</string>
+    <string name="loading_error_dialog_retry_button_title">Tekrar Dene</string>
+    <string name="loading_error_dialog_cancel_button_title">İptal Et</string>
+    
+    <string name="rate_dialog_title">Oy Ver?!</string>
+    <string name="rate_dialog_message">Eğer \"Anime Mania\"nı kullanmaktan zevk alıyosanız, 
+        bunu değerlendirmek için lütfen bir dakikanızı ayırın. Desteğiniz için teşekkürler!
+        </string>
+    <string name="rate_dialog_later_button_title">Daha Sonra</string>
+    <string name="rate_dialog_rate_button_title">Oy Ver!</string>
+    
+    
+    <string name="video_activity_error">Maalesef, bu video oynatılamıyor.
+        \nDiğer kaynağı deneyin.
+    </string>
+    <string name="episodelist_activity_error">Lütfen, internet bağlantınızı kontrol edin!</string>
+    <string name="cartoon_activity_error">Sunucu meşgul, lütfen daha sonra tekrar deneyiniz.</string>
+    
+    <string name="share_app_chooser">Bu müthiş uygulamayı paylaş</string>
+    <string name="share_subject">Bu android uygulamasına göz atın! </string>
+    <string name="play_store_app_uri">https://play.google.com/store/apps/details?id=</string>
+    <string name="share_string">Marketdeki En Iyi Android Uygulaması, </string>
+    <string name="play_store_not_reached">Play Store\'a erişilemiyor!</string>
+    
+    <!-- start episode and season names -->
+    
+    <string name="casper_series_name">Casper Bölüm</string>
+    
+    <string name="corneilandbernie_series_name">Corneil Bölüm</string>
+    
+    <string name="janggeumsdream_series_name">Jang Geum Bölüm</string>
+    
+    <string name="lalinea_series_name">Bay Meraklı Bölüm</string>
+    
+    <string name="madjackthepirate_series_name">Korsan Jack Bölüm</string>
+    
+    <string name="magination_series_name">Magi-Nation Bölüm</string>
+    
+    <string name="minuscule_series_name">Minuscule Bölüm</string>
+    
+    <string name="onepiece_series_name">One Piece Bölüm</string>
+    
+    <string name="pingu_series_name">Pingu Bölüm</string>
+    
+    <string name="poppetstown_series_name">Kukla Şehri Bölüm</string>
+    
+    <string name="sailormoon_series_name">Ay Savaşçısı Bölüm</string>
+    
+    <string name="sheepintheisland_series_name">Adadakı Kuzu Bölüm</string>
+    
+    <string name="theflintstones_series_name">Taş Devri Bölüm</string>
+    
+    <string name="thejetsons_series_name">Jetgiller Bölüm</string>
+    
+    <string name="themask_series_name">Maske Bölüm</string>
+    
+    <string name="thesmurfs_series_name">Şirinler Bölüm</string>
+    
+    <string name="triplets_series_name">Üçüzler Bölüm</string>
+    
+    <string name="trollz_series_name">Trollz Bölüm</string>
+    
+    <string name="yogibear_series_name">Ayı Yogi Bölüm</string>
+    
+    <string name="dragonball_series_name">Dragon Ball Bölüm</string>
+    
+    <string name="louie_series_name">Louie Bölüm</string>
+    
+    <string name="arthur_series_name">Arthur Bölüm</string>
+    
+    <string name="bakugan_series_name">Bakugan Bölüm</string>
+    
+    <string name="berrybittyadventures_series_name">Çilek Kız Bölüm</string>
+    
+    <string name="beyblademetalfusion_series_name">Beyblade Bölüm</string>
+    
+    <string name="brave10_series_name">Brave 10 Bölüm</string>
+    
+    <string name="chloescloset_series_name">Damlanın Dolabı Bölüm</string>
+    
+    <string name="chuckandfriends_series_name">Chuck Bölüm</string>
+    
+    <string name="chuggington_series_name">Çufçuflar Diyarı Bölüm</string>
+    
+    <string name="cityoffriends_series_name">Bizim Mahalle Bölüm</string>
+    
+    <string name="deathnote_series_name">Ölüm Defteri Bölüm</string>
+    
+    <string name="dexhamilton_series_name">Dex Hamilton Bölüm</string>
+    
+    <string name="dibothegiftdragon_series_name">Dibo Bölüm</string>
+    
+    <string name="dinosaurtrain_series_name">Dinozor Treni Bölüm</string>
+    
+    <string name="diveollydive_series_name">Olly Bölüm</string>
+    
+    <string name="dougie_series_name">Dougie Bölüm</string>
+    
+    <string name="emilie_series_name">Emilie Bölüm</string>
+    
+    <string name="erkyperky_series_name">Öcük ile Böcük Bölüm</string>
+    
+    <string name="everythingsrosie_series_name">Rosie Bölüm</string>
+    
+    <string name="firemansam_series_name">İtfaiyeci Sam Bölüm</string>
+    
+    <string name="flashanddash_series_name">Flash ve Dash Bölüm</string>
+    
+    <string name="ggofootball_series_name">Ggo Football Bölüm</string>
+    
+    <string name="gormiti_series_name">Gormiti Bölüm</string>
+    
+    <string name="greensquad_series_name">Yeşil Ekip Bölüm</string>
+    
+    <string name="iamananimal_series_name">Günün Hayvanı Bölüm</string>
+    
+    <string name="jibberjabber_series_name">Jibber ve Jabber Bölüm</string>
+    
+    <string name="justiceleague_series_name">Adalet Takımı Bölüm</string>
+    
+    <string name="laurasstar_series_name">Laura\'nın Yıldızı Bölüm</string>
+    
+    <string name="leon_series_name">Leon Aslan Bölüm</string>
+    
+    <string name="littlebrownbear_series_name">Kahverengi Ayıcık Bölüm</string>
+    
+    <string name="littlecharleybear_series_name">Ayıcık Bombo Bölüm</string>
+    
+    <string name="lose_series_name">L.O.S.E Bölüm</string>
+    
+    <string name="lulu_series_name">Lulu Bölüm</string>
+    
+    <string name="martine_series_name">Ayşegül Bölüm</string>
+    
+    <string name="maxsteel_series_name">Max Steel Bölüm</string>
+    
+    <string name="mayathebee_series_name">Arı Maya Bölüm</string>
+    
+    <string name="millymolly_series_name">Milly ve Molly Bölüm</string>
+    
+    <string name="monsieurloutre_series_name">Bay Susamuru Bölüm</string>
+    
+    <string name="monsuno_series_name">Monsuno Bölüm</string>
+    
+    <string name="mrmoon_series_name">Bay Ay Bölüm</string>
+    
+    <string name="mybigfriend_series_name">Kocaman Arkadaşım Bölüm</string>
+    
+    <string name="noonbory_series_name">Afacan Bölüm</string>
+    
+    <string name="oscarsoasis_series_name">Oscar Çöllerde Bölüm</string>
+    
+    <string name="patchpillows_series_name">Yamalı Yastıklar Bölüm</string>
+    
+    <string name="pimandpom_series_name">Pim ve Pom Bölüm</string>
+    
+    <string name="pippilongstocking_series_name">Pippi Bölüm</string>
+    
+    <string name="poppycat_series_name">Pisi Kedi Bölüm</string>
+    
+    <string name="promotransformersrescuebots_series_name">P.T.R.B Bölüm</string>
+    
+    <string name="punky_series_name">Punky Bölüm</string>
+    
+    <string name="roaryroary_series_name">Roary Bölüm</string>
+    
+    <string name="saladin_series_name">Selahaddin Bölüm</string>
+    
+    <string name="shaunthesheep_series_name">Koyun Shaun Bölüm</string>
+    
+    <string name="stellandsam_series_name">Stella ve Sam Bölüm</string>
+    
+    <string name="stellina_series_name">Stellina Bölüm</string>
+    
+    <string name="thegees_series_name">Gees Bölüm</string>
+    
+    <string name="thelittleprince_series_name">Küçük Prens Bölüm</string>
+    
+    <string name="thesmallgiant_series_name">Küçük Dev Bölüm</string>
+    
+    <string name="thewotwots_series_name">Wotwotlar Bölüm</string>
+    
+    <string name="thomasandfriends_series_name">Thomas Bölüm</string>
+    
+    <string name="ticketytoc_series_name">Tickety Toc Bölüm</string>
+    
+    <string name="tinyplanets_series_name">Gezegenler Bölüm</string>
+    
+    <string name="tototrouble_series_name">Afacan Toto Bölüm</string>
+    
+    <string name="trotro_series_name">Trotro Bölüm</string>
+    
+    <string name="vroomiz_series_name">Vroomiz Bölüm</string>
+    
+    <string name="wildkratts_series_name">Kratt Kardeşler Bölüm</string>
+    
+    <string name="woodlies_series_name">Woodlies Bölüm</string>
+    
+    <string name="woofy_series_name">Woofy Bölüm</string>
+    
+    <string name="yummytoonies_series_name">Leziz Şekiller Bölüm</string>
+    
+    <string name="zekespad_series_name">Zek\'in Dünyası Bölüm</string>
+    
+    <string name="spiderman_series_name">Örümcek Adam Bölüm</string>
+    
+    <!-- end episode and season names -->
+
+</resources>

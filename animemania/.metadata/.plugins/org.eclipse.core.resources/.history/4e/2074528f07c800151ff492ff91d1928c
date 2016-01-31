@@ -1,0 +1,27 @@
+package com.example.animemania.constant;
+
+public class Constants {
+
+	public static final String CACHE_DIR = "AnimeMania";
+
+	public static final String KEY_EPISODE = "episode"; // parent node
+	public static final String KEY_ID = "id";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_SEASON = "season";
+	public static final String KEY_DURATION = "duration";
+	public static final String KEY_THUMB_URL = "thumb_url";
+	public static final String KEY_VIDEO_URL = "video_url";
+	public static final String KEY_VIDEO_URL2 = "video_url2";
+
+	
+	  //encrypted URLs 
+	  public static final String URLCasper =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCxviQ6qzUNo23A6DmyAi5S";
+	  
+	  public static final String URLLouie =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHD17BbR+RsmnLaJpdE5c9odle6W17VxGPlKjjIArjJeDA==";
+	  
+	  public static final String URLJang =
+	  "mH3DPIIik/HzEMLF99Y5SYDTntHlgx38BgE6JfFKTHCMJajEyBdgFutCle4WnlAIIRiB9KXpcBLVl5zobkrV9w==";
+	
+} // class Constants

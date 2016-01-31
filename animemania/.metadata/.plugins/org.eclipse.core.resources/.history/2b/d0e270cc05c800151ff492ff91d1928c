@@ -1,0 +1,658 @@
+package com.example.animemania.activity;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.example.animemania.AboutDialog;
+import com.example.animemania.R;
+import com.example.animemania.adapter.ListViewAdapter;
+import com.example.animemania.constant.Constants;
+import com.example.animemania.model.AnimeSeries;
+import com.example.animemania.utility.FileCache;
+import com.example.animemania.utility.InternetConnectionChecker;
+import com.example.animemania.utility.Utils;
+import com.example.animemania.utility.XMLParser;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnKeyListener;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class AnimeListActivity extends ActionBarActivity {
+	
+	// All static variables
+	
+	public static final String EXTRA_POSITION = "com.example.animemania.position";
+	//public static final String EXTRA_URL = "com.example.animemania.url";
+	private final static String APP_PNAME = "com.example.animemania";
+	private static final String KEY_EPISODE_NAME="episode_name";
+	private static final String KEY_SEASON_NAME="season_name";
+	// XML node keys
+	
+	
+	private ListView mListView;
+	private ProgressBar mProgressBar;
+	private InternetConnectionChecker mInternetConnectionChecker;
+	private String mURL;
+	private EpisodeListDownloader mEpisodeListDownloader;
+	private AnimeSeries mAnimeSeries;
+	
+	private Uri mVideoUri1;
+	private Uri mVideoUri2;
+	
+	/**
+	 * Listview selected row
+	 */
+	private int mSelectedRow = 0;
+	
+	/**
+	 * Right arrow icon on each listview row
+	 */
+	private ImageView mMoreIv = null;
+	
+	private QuickAction mQuickAction;
+	
+	private static final int ID_SOURCE_1 = 1;
+	private static final int ID_SOURCE_2 = 2;
+	
+	private AlertDialog.Builder connectionCheckerDialog;
+	//private AlertDialog.Builder choiceDialog;
+	private AlertDialog.Builder loadingErrorDialog;
+	
+	private String loadingErrorDialogMessage;
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_anime_list);
+	    
+		
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
+
+		mListView = (ListView) findViewById(R.id.series_list_view);
+		
+		mProgressBar = (ProgressBar) findViewById(R.id.series_progress_bar);
+		
+		if (NavUtils.getParentActivityName(this) != null) { 
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		} // if
+		
+		mInternetConnectionChecker = new InternetConnectionChecker(this); // connection
+															// detector
+		
+		//choiceDialog = new AlertDialog.Builder(this);
+		connectionCheckerDialog = new AlertDialog.Builder(this);
+		
+		loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+		
+		//in on back pressed from the dialog finish the activity.
+		connectionCheckerDialog.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					onBackPressed();
+					dialog.dismiss();
+				}
+				return true;
+			}
+		});
+		
+		Intent i = getIntent();
+		int position = i.getIntExtra(EXTRA_POSITION, 0);
+		
+		//customize the action bar.
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
+		
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		View v = inflater.inflate(R.layout.title_actionbar, null);
+		
+		TextView actionBarTitleTextView = (TextView) v.findViewById(R.id.actionbar_title_textview);
+		actionBarTitleTextView.setSelected(true);
+		actionBar.setCustomView(v);
+		
+		
+		mAnimeSeries = new AnimeSeries();
+		
+		if (savedInstanceState != null) {
+			if (mAnimeSeries != null) {
+				mAnimeSeries.setSeriesName(savedInstanceState.getString(
+						KEY_EPISODE_NAME, null));
+				mAnimeSeries.setSeasonName(savedInstanceState.getString(
+						KEY_SEASON_NAME, null));
+			} // if
+		} // if
+		
+		switch (position) {
+		case 0:
+			mURL = Utils.decrypt(Constants.URLCasper, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.casper);
+			actionBar.setIcon(R.drawable.casper);
+			mAnimeSeries.setSeriesName(getString(R.string.casper_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.casper));
+			break;
+		case 1:
+			mURL = Utils.decrypt(Constants.URLLouie, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.louie);
+			actionBar.setIcon(R.drawable.louie);
+			mAnimeSeries.setSeriesName(getString(R.string.louie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.louie));
+			break;
+		case 2:
+			mURL = Utils.decrypt(Constants.URLJang, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.janggeumsdream);
+			actionBar.setIcon(R.drawable.janggeumsdream);
+			mAnimeSeries.setSeriesName(getString(R.string.janggeumsdream_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.janggeumsdream));
+			break;
+		default: // do nothing
+		} // switch
+		
+		ActionItem source1Item 	
+			= new ActionItem(ID_SOURCE_1, getResources().getString(R.string.action_item_source_1),
+									      getResources().getDrawable(R.drawable.ic_video_source_1));
+		
+		ActionItem source2Item 	
+			= new ActionItem(ID_SOURCE_2, getResources().getString(R.string.action_item_source_2),
+										  getResources().getDrawable(R.drawable.ic_video_source_2));
+		
+        mQuickAction = new QuickAction(this);
+		
+		mQuickAction.addActionItem(source1Item);
+		mQuickAction.addActionItem(source2Item);
+
+		//setup the action item click listener
+		mQuickAction
+				.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+					@Override
+					public void onItemClick(QuickAction quickAction, int pos,
+							int actionId) {
+
+						Intent intent = new Intent(AnimeListActivity.this,
+								VideoViewerActivity.class);
+						
+						switch(actionId)
+						{
+						
+						case ID_SOURCE_1:
+						{
+							intent.putExtra(
+									VideoViewerActivity.KEY_MAIN_VIDEO_URL,
+									mVideoUri1);
+						} // case 
+						
+						break;
+						
+						case ID_SOURCE_2:
+						{
+							intent.putExtra(
+									VideoViewerActivity.KEY_MAIN_VIDEO_URL,
+									mVideoUri2);
+						} // case
+						
+						break;
+						
+						} // switch
+						
+						if (!mInternetConnectionChecker.isConnectedToInternet()) {
+							Toast.makeText(getApplicationContext(), 
+									R.string.episodelist_activity_error, Toast.LENGTH_LONG)
+									.show();
+						} // if
+						else {
+							// start intent to look video
+							startActivity(intent);
+						} // else
+						
+					} // onItemClick
+				});
+
+		// setup on dismiss listener, set the icon back to normal
+		mQuickAction.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				mMoreIv.setImageResource(R.drawable.arrow);
+			}
+		});
+		
+		updateSeries();
+
+	} // onCreate
+	
+	private void updateSeries() {
+		mListView.setAdapter(null);
+		
+		if (mEpisodeListDownloader != null) {
+			mEpisodeListDownloader.cancel(false); // cancel Asynctask politely.
+		} // if
+		
+		mEpisodeListDownloader = new EpisodeListDownloader();
+		mEpisodeListDownloader.execute(mURL);
+	} // updateEpisodes
+	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		if (mAnimeSeries != null) {
+		outState.putString(KEY_EPISODE_NAME, mAnimeSeries.getSeriesName());
+		outState.putString(KEY_SEASON_NAME, mAnimeSeries.getSeasonName());
+		} // if
+	} // onSaveInstanceState
+
+	@Override
+	protected void onDestroy() {
+		if (mEpisodeListDownloader != null) {
+			mEpisodeListDownloader.cancel(false); // cancel Asynctask politely,
+													// in onDestroy.
+		} // if
+		
+	    super.onDestroy();
+	} // onDestroy
+	
+	
+	
+	@Override
+	protected void onResume() {
+		
+		super.onResume();
+		
+	} // onResume
+	
+	@Override
+	protected void onPause() {
+		
+		super.onPause();
+	} // onPause
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.episode_list_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:  // this is for "up" button which is the action bar button
+    		if (NavUtils.getParentActivityName(this) != null) {
+    			//NavUtils.navigateUpFromSameTask(this); // to return to parent activity
+    			
+    			onBackPressed(); // solved the problem
+    			
+    		} // if
+    		
+    		return true;
+		case R.id.menu_item_refresh_list:
+			updateSeries();
+			return true;
+		case R.id.episode_list_menu_item_share:
+			shareApp();
+			return true;
+		case R.id.episode_list_menu_item_about:
+			showAbout();
+			return true;
+		case R.id.episode_list_menu_item_rate:
+			rateApp();
+			return true;
+		case R.id.episode_list_menu_item_other_apps:
+			showOtherApps();
+			return true;
+		case R.id.episode_list_menu_item_clear_cache:
+			clearCache();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		} // switch
+	} // onOptionsItemSelected
+
+	private void clearCache() {
+		FileCache fileCache = new FileCache(this);
+		fileCache.clear();
+		
+		Toast.makeText(this, R.string.cache_cleared, Toast.LENGTH_SHORT).show();
+	} // clearCache
+
+	private void showOtherApps() {
+		Uri appUri = Uri.parse("market://search?q=" + getString(R.string.other_apps_query));
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+
+		if (isIntentSafe) {
+			startActivity(i);
+		} // if
+		else {
+			Toast.makeText(getApplicationContext(), R.string.play_store_not_reached,
+					Toast.LENGTH_LONG).show();
+		} // else
+	} // showOtherApps
+
+	private void rateApp() {
+		Uri appUri = Uri.parse("market://details?id=" + APP_PNAME);
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+
+		if (isIntentSafe) {
+			
+			//disable the rate dialog.
+			SharedPreferences prefs = getSharedPreferences("apprater", 0);
+			SharedPreferences.Editor editor = prefs.edit();
+			
+			if (editor != null) {
+                editor.putBoolean("dontshowagain", true);
+                editor.commit();
+            } // if
+			
+			startActivity(i);
+		} // if
+		else {
+			Toast.makeText(getApplicationContext(), R.string.play_store_not_reached,
+					Toast.LENGTH_LONG).show();
+		} // else
+
+	} // rateApp
+
+	private void shareApp() {
+		Intent i = new Intent(Intent.ACTION_SEND);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+		
+		if (isIntentSafe) 
+		{
+
+			String shareString = (new StringBuilder(
+					getString(R.string.share_string)))
+					.append(" " + getString(R.string.play_store_app_uri))
+					.append(APP_PNAME).toString();
+
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_TEXT, shareString);
+			i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+			i = Intent.createChooser(i, getString(R.string.share_app_chooser));
+			startActivity(i);
+		} 
+		else 
+		{
+			Toast.makeText(getApplicationContext(), R.string.sharing_error,
+					Toast.LENGTH_LONG).show();
+		}
+	} // shareApp
+	
+	private void showAbout() {
+		AboutDialog aboutDialog = new AboutDialog();
+		aboutDialog.onAboutClick(this);
+	} // showAbout
+	
+	@Override
+	public void onBackPressed() { 
+		
+		super.onBackPressed();
+		
+	} // onBackPressed
+
+	private class EpisodeListDownloader extends
+			AsyncTask<String, Integer, ArrayList<HashMap<String, String>>> {
+
+		private ArrayList<HashMap<String, String>> episodeList;
+		private ListViewAdapter adapter;
+		private HashMap<String, String> episode = new HashMap<String, String>();
+
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(
+				String... urls) {
+
+			XMLParser parser = new XMLParser();
+			boolean isURLValid = false;
+			
+			
+			HttpURLConnection con = null;
+			
+			try {
+				HttpURLConnection.setFollowRedirects(false);
+				// note : you may also need
+				// HttpURLConnection.setInstanceFollowRedirects(false)
+
+				con = (HttpURLConnection) new URL(
+						urls[0]).openConnection();
+				con.setRequestMethod("GET");
+				
+				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					isURLValid = true;
+				} // if
+				else {
+					isURLValid = false;
+				} // else
+			} catch (Exception e) {
+				isURLValid = false;
+			} // catch
+			finally {
+				if (con != null) {
+					con.disconnect();
+				} // if
+			} // finally
+			
+			if (isURLValid) {
+			
+			String xml = parser.getXmlFromUrl(urls[0]); // getting XML from mURL
+														// || if bandwidth is
+														// low -> returns null
+			
+			//</begin> determines the end of xml file
+			
+			if (xml == null || ! xml.contains("</begin>")) {
+				// AnimeListActivity.this.finish(); // finish the activity, for
+				// convenience only
+				loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+				episodeList = null;
+			} else {
+
+				episodeList = new ArrayList<HashMap<String, String>>();
+				
+				Document doc = parser.getDomElement(xml); // getting DOM element
+
+				NodeList nl = doc.getElementsByTagName(Constants.KEY_EPISODE);
+
+				// looping through all episode nodes <episode>;
+				for (int i = 0; i < nl.getLength(); i++) {
+					// creating new HashMap
+					HashMap<String, String> map = new HashMap<String, String>();
+					Element e = (Element) nl.item(i);
+					// adding each child node to HashMap key =&gt; value
+					map.put(Constants.KEY_ID,
+							parser.getValue(e, Constants.KEY_ID));
+					map.put(Constants.KEY_TITLE,
+							mAnimeSeries.getSeriesName() +
+							parser.getValue(e, Constants.KEY_TITLE)); // string res + " " + episode number
+					map.put(Constants.KEY_SEASON,
+							parser.getValue(e, Constants.KEY_SEASON) +
+							mAnimeSeries.getSeasonName()); // season number + " "+ string res
+					map.put(Constants.KEY_DURATION,
+							parser.getValue(e, Constants.KEY_DURATION));
+					map.put(Constants.KEY_THUMB_URL,
+							parser.getValue(e, Constants.KEY_THUMB_URL));
+					map.put(Constants.KEY_VIDEO_URL,
+							parser.getValue(e, Constants.KEY_VIDEO_URL));
+					map.put(Constants.KEY_VIDEO_URL2,
+							parser.getValue(e, Constants.KEY_VIDEO_URL2));
+
+					// adding HashMap to ArrayList
+					episodeList.add(map);
+				}
+			} // else
+			
+			} // if
+			
+			else {
+				if (mInternetConnectionChecker.isConnectedToInternet()) {
+					loadingErrorDialogMessage = getString(R.string.cartoon_activity_error);
+				} // if
+				else {
+					loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+				} // else
+				
+				episodeList = null;
+			} // else
+			
+			return episodeList;
+		} // doInBackGround
+
+		@Override
+		protected void onPreExecute() {
+			// activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+			mProgressBar.setVisibility(View.VISIBLE);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			
+			mProgressBar.setVisibility(View.GONE);
+
+			if (result != null) {
+				
+				// Getting adapter by passing xml data ArrayList
+				adapter = new ListViewAdapter(AnimeListActivity.this, result);
+				mListView.setAdapter(adapter);
+
+				// Click event for single mListView row
+				mListView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int position, long id) {
+						
+						episode = episodeList.get(position);
+						
+						mSelectedRow = position; //set the selected row	
+						
+						mQuickAction.show(view);
+						mQuickAction.setAnimStyle(QuickAction.ANIM_GROW_FROM_RIGHT);
+						
+						//change the right arrow icon to selected state 			
+						mMoreIv = (ImageView) view.findViewById(R.id.image_view_more);
+						mMoreIv.setImageResource(R.drawable.arrow);
+						
+						
+						mVideoUri1 = Uri.parse(episode.get(Constants.KEY_VIDEO_URL));
+						mVideoUri2 = Uri.parse(episode.get(Constants.KEY_VIDEO_URL2));
+						
+					} // onItemClick
+				});
+				
+			} // if
+			else { 
+				mListView.setAdapter(null);
+				loadingErrorDialog = new AlertDialog.Builder(AnimeListActivity.this);
+				loadingErrorDialog.setTitle(R.string.loading_error_dialog_title);
+				loadingErrorDialog.setMessage(loadingErrorDialogMessage);
+				loadingErrorDialog.setIcon(R.drawable.ic_action_warning);
+				
+				loadingErrorDialog.setNegativeButton(R.string.loading_error_dialog_cancel_button_title, 
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								onBackPressed();
+							} // onClick
+						});
+				
+				loadingErrorDialog.setPositiveButton(R.string.loading_error_dialog_retry_button_title, 
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+								updateSeries();
+							} // onClick
+						});
+				
+				loadingErrorDialog.setOnKeyListener(new OnKeyListener() {
+
+					@Override
+					public boolean onKey(DialogInterface dialog, int keyCode,
+							KeyEvent event) {
+						if (keyCode == KeyEvent.KEYCODE_BACK) {
+							
+							dialog.dismiss();
+							onBackPressed();
+						}
+						return true;
+					}
+				});
+				
+				AlertDialog dialog = loadingErrorDialog.create();
+				dialog.setCancelable(true);
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.show();
+				
+			} // else
+			
+			super.onPostExecute(result);
+		} // onPostExecute
+
+	} // class EpisodeListDownloader
+
+} // class AnimeListActivity

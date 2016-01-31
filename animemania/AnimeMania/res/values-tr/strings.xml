@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Türkçe Çizgi Film Seyret</string>
+    <string name="action_overflow">Daha&#8230;</string>
+    <string name="hello_world">Selam Dünya!</string>
+    
+    <string name="about_developer">Geliştirici: Example Developer</string>
+    <string name="about_developer_email">E-posta: example@example.com</string>
+    <string name="app_version">Sürüm 1.0</string>
+    
+    
+    <string name="bunny">Büyük Bunny</string>
+    
+    
+    <string name="cache_cleared">Önbellek Başarıyla Temizlendi!</string>
+    <string name="action_clear_cache">Önbelleği Temizle</string>
+    <string name="sharing_error">Paylaşım İçin Hiçbir Uygulama  Bulunmadı!</string>
+    <string name="back_clicked">Çıkmak için tekrar BACK tuşuna tıklayınız!</string>
+    <string name="action_item_source_1">Kaynak 1</string>
+    <string name="action_item_source_2">Kaynak 2</string>
+    
+    <string name="promotion_dialog_title">Örnek Uygulama Tanıtımı</string>
+    <string name="promotion_dialog_later_button_title">Daha Sonra</string>
+    <string name="promotion_dialog_install_button_title">İndir</string>
+    
+    <string name="action_search">Arama</string>
+    <string name="action_share">Paylaş</string>
+    <string name="action_rate">Oy Ver!</string>
+    <string name="action_other_apps">Diğer Uygulamalar</string>
+    <string name="action_extra_settings">Ayarlar</string>
+    <string name="action_about">Hakkında</string>
+    <string name="action_exit">Çıkış</string>
+    <string name="action_refresh_list">Listeyi Yenile</string>
+    
+    <string name="loading_error_dialog_title">İndirme Hatası&#8230;</string>
+    <string name="loading_error_dialog_message">İnternet bağlantısı yavaş veya yok.</string>
+    <string name="loading_error_dialog_retry_button_title">Tekrar Dene</string>
+    <string name="loading_error_dialog_cancel_button_title">İptal Et</string>
+    
+    <string name="rate_dialog_title">Oy Ver?!</string>
+    <string name="rate_dialog_message">Eğer \"Anime Mania\"nı kullanmaktan zevk alıyosanız, 
+        bunu değerlendirmek için lütfen bir dakikanızı ayırın. Desteğiniz için teşekkürler!
+        </string>
+    <string name="rate_dialog_later_button_title">Daha Sonra</string>
+    <string name="rate_dialog_rate_button_title">Oy Ver!</string>
+    
+    
+    <string name="video_activity_error">Maalesef, bu video oynatılamıyor.
+        \nDiğer kaynağı deneyin.
+    </string>
+    <string name="episodelist_activity_error">Lütfen, internet bağlantınızı kontrol edin!</string>
+    <string name="cartoon_activity_error">Sunucu meşgul, lütfen daha sonra tekrar deneyiniz.</string>
+    
+    <string name="share_app_chooser">Bu müthiş uygulamayı paylaş</string>
+    <string name="share_subject">Bu android uygulamasına göz atın! </string>
+    <string name="play_store_app_uri">https://play.google.com/store/apps/details?id=</string>
+    <string name="share_string">Marketdeki En Iyi Android Uygulaması, </string>
+    <string name="play_store_not_reached">Play Store\'a erişilemiyor!</string>
+    
+    <!-- start episode and season names -->
+    
+    <string name="bunny_series_name">Büyük Bunny Bölüm</string>
+    
+    <!-- end episode and season names -->
+
+</resources>

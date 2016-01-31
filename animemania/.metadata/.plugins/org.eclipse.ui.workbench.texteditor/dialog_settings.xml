@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="adLayout" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="adLayout"/>
+			<item value="onCompletion"/>
+			<item value="onC"/>
+			<item value="louie"/>
+			<item value="mConnectionDetector"/>
+			<item value="displayInterstitial"/>
+			<item value="com.example.animemania"/>
+			<item value="[&quot;][m][H][3].[&quot;];"/>
+		</list>
+		<list key="replacehistory">
+			<item value="&quot;&quot;"/>
+			<item value=""/>
+			<item value="apppromoter"/>
+			<item value="setSeriesName"/>
+			<item value=" Эпизод&lt;/string&gt;"/>
+			<item value="_series_name&quot;&gt;"/>
+			<item value=" Bölüm&lt;/string&gt;"/>
+			<item value=" Series&lt;/string&gt;"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="257" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="194" key="DIALOG_Y_ORIGIN"/>
+		<item value="1303" key="DIALOG_X_ORIGIN"/>
+	</section>
+</section>

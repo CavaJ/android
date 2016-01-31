@@ -1,0 +1,544 @@
+package com.example.animemania.fragment;
+
+import java.lang.ref.WeakReference;
+import java.util.List;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import com.example.animemania.AboutDialog;
+import com.example.animemania.AppGrader;
+import com.example.animemania.AppPromoter;
+import com.example.animemania.R;
+import com.example.animemania.activity.AnimeListActivity;
+import com.example.animemania.utility.FileCache;
+import com.example.animemania.utility.InternetConnectionChecker;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+
+public class AnimeManiaGridFragment extends Fragment {
+
+	private Integer[] customImages = { R.drawable.casper, R.drawable.louie,
+			R.drawable.janggeumsdream, R.drawable.lalinea, R.drawable.madjackthepirate, 
+			R.drawable.magination,R.drawable.minuscule, R.drawable.onepiece, R.drawable.pingu, 
+			R.drawable.poppetstown, R.drawable.sailormoon, R.drawable.sheepintheisland, 
+			R.drawable.theflintstones, R.drawable.thejetsons, R.drawable.themask, R.drawable.thesmurfs,
+			R.drawable.triplets, R.drawable.trollz, R.drawable.yogibear, 
+			R.drawable.dragonball, R.drawable.corneilandbernie,
+			R.drawable.arthur, R.drawable.bakugan, R.drawable.berrybittyadventures,
+			R.drawable.beyblademetalfusion, R.drawable.brave10, R.drawable.chloescloset,
+			R.drawable.chuckandfriends, R.drawable.chuggington, R.drawable.cityoffriends,
+			R.drawable.deathnote, R.drawable.dexhamilton, R.drawable.dibothegiftdragon,
+			R.drawable.dinosaurtrain, R.drawable.diveollydive, R.drawable.dougie,
+			R.drawable.emilie, R.drawable.erkyperky, R.drawable.everythingsrosie,
+			R.drawable.firemansam, R.drawable.flashanddash, R.drawable.ggofootball,
+			R.drawable.gormiti, R.drawable.greensquad, R.drawable.iamananimal,
+			R.drawable.jibberjabber, R.drawable.justiceleague, R.drawable.laurasstar,
+			R.drawable.leon, R.drawable.littlebrownbear, R.drawable.littlecharleybear,
+			R.drawable.lose, R.drawable.lulu, R.drawable.martine,
+			R.drawable.maxsteel, R.drawable.mayathebee, R.drawable.millymolly,
+			R.drawable.monsieurloutre, R.drawable.monsuno, R.drawable.mrmoon,
+			R.drawable.mybigfriend, R.drawable.noonbory, R.drawable.oscarsoasis,
+			R.drawable.patchpillows, R.drawable.pimandpom, R.drawable.pippilongstocking,
+			R.drawable.poppycat, R.drawable.promotransformersrescuebots, R.drawable.punky,
+			R.drawable.roaryroary, R.drawable.saladin, R.drawable.shaunthesheep,
+			R.drawable.stellandsam, R.drawable.stellina, R.drawable.thegees,
+			R.drawable.thelittleprince, R.drawable.thesmallgiant, R.drawable.thewotwots,
+			R.drawable.thomasandfriends, R.drawable.ticketytoc, R.drawable.tinyplanets,
+			R.drawable.tototrouble, R.drawable.trotro, R.drawable.vroomiz,
+			R.drawable.wildkratts, R.drawable.woodlies, R.drawable.woofy,
+			R.drawable.yummytoonies, R.drawable.zekespad, R.drawable.spiderman };
+
+	private Integer[] customNames = { R.string.casper, R.string.louie,
+			R.string.janggeumsdream, R.string.lalinea, R.string.madjackthepirate, R.string.magination,
+			R.string.minuscule, R.string.onepiece, R.string.pingu, R.string.poppetstown,
+			R.string.sailormoon, R.string.sheepintheisland,
+			R.string.theflintstones, R.string.thejetsons, R.string.themask,
+			R.string.thesmurfs, R.string.triplets, R.string.trollz, 
+			R.string.yogibear, R.string.dragonball, R.string.corneilandbernie,
+			R.string.arthur, R.string.bakugan, R.string.berrybittyadventures,
+			R.string.beyblademetalfusion, R.string.brave10, R.string.chloescloset,
+			R.string.chuckandfriends, R.string.chuggington, R.string.cityoffriends,
+			R.string.deathnote, R.string.dexhamilton, R.string.dibothegiftdragon,
+			R.string.dinosaurtrain, R.string.diveollydive, R.string.dougie,
+			R.string.emilie, R.string.erkyperky, R.string.everythingsrosie,
+			R.string.firemansam, R.string.flashanddash, R.string.ggofootball,
+			R.string.gormiti, R.string.greensquad, R.string.iamananimal,
+			R.string.jibberjabber, R.string.justiceleague, R.string.laurasstar,
+			R.string.leon, R.string.littlebrownbear, R.string.littlecharleybear,
+			R.string.lose, R.string.lulu, R.string.martine,
+			R.string.maxsteel, R.string.mayathebee, R.string.millymolly,
+			R.string.monsieurloutre, R.string.monsuno, R.string.mrmoon,
+			R.string.mybigfriend, R.string.noonbory, R.string.oscarsoasis,
+			R.string.patchpillows, R.string.pimandpom, R.string.pippilongstocking,
+			R.string.poppycat, R.string.promotransformersrescuebots, R.string.punky,
+			R.string.roaryroary, R.string.saladin, R.string.shaunthesheep,
+			R.string.stellandsam, R.string.stellina, R.string.thegees,
+			R.string.thelittleprince, R.string.thesmallgiant, R.string.thewotwots,
+			R.string.thomasandfriends, R.string.ticketytoc, R.string.tinyplanets,
+			R.string.tototrouble, R.string.trotro, R.string.vroomiz,
+			R.string.wildkratts, R.string.woodlies, R.string.woofy,
+			R.string.yummytoonies, R.string.zekespad, R.string.spiderman };
+	
+	
+	private InternetConnectionChecker mInternetConnectionChecker;
+	private final static String APP_PNAME = "com.example.animemania";
+	private Bitmap mPlaceHolderBitmap;
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// tells the hosting activity that this fragment has menu options to display.
+		setHasOptionsMenu(true);
+		setRetainInstance(true);
+		
+		mInternetConnectionChecker = new InternetConnectionChecker(getActivity()); // connection detector
+		
+		if (mInternetConnectionChecker.isConnectedToInternet()) {
+			AppGrader.app_launched(getActivity()); // for showing rate dialog.
+			AppPromoter.app_launched(getActivity()); // for showing promotion dialog.
+		} // if
+		
+		
+	} // onCreate
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.cartoon_activity_actions, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View v = inflater.inflate(R.layout.fragment_animemania_grid, container, false);
+
+		GridView gridView = (GridView) v.findViewById(R.id.gridview);
+		
+		GridViewAdapter adapter = new GridViewAdapter(getActivity(), customNames,
+				customImages);
+		
+		gridView.setAdapter(adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				
+				/*
+				Toast.makeText(getActivity(),
+						"Pos: " + position + " Id: " + id, Toast.LENGTH_SHORT)
+						.show();
+				*/
+				
+				
+				if (!mInternetConnectionChecker.isConnectedToInternet()) {
+					Toast.makeText(getActivity(),
+							R.string.episodelist_activity_error,
+							Toast.LENGTH_LONG).show();
+				} // if
+				else
+				{
+					Intent i = new Intent(getActivity(),
+							AnimeListActivity.class);
+					i.putExtra(AnimeListActivity.EXTRA_POSITION, position);
+					startActivity(i);
+				} // else
+				
+			} // onItemClick
+		});
+		
+		return v;
+	} // onCreateView
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		mPlaceHolderBitmap 
+		= BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
+	} // onActivityCreated
+
+	@Override
+	public void onStop() {
+		super.onStop();
+	} // onStop
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	} // onDestroy
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.menu_item_share:
+			shareApp();
+			return true;
+		case R.id.menu_item_rate:
+			rateApp();
+			return true;
+		case R.id.menu_item_about:
+			showAbout();
+			return true;
+		case R.id.menu_item_other_apps:
+			showOtherApps();
+			return true;
+		case R.id.menu_item_clear_cache:
+			clearCache();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	} // onOptionsItemSelected
+
+	private void clearCache() {
+		if (getActivity() != null)
+		{
+			FileCache fileCache = new FileCache(getActivity());
+			fileCache.clear();
+			
+			Toast.makeText(getActivity(), R.string.cache_cleared, Toast.LENGTH_SHORT).show();
+		} // if
+	} // clearCache();
+
+	private void showOtherApps() {
+		Uri appUri = Uri.parse("market://search?q=" + getString(R.string.other_apps_query));
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+		
+		//check that there is at least one activity to perform this intent
+		if (getActivity() != null) {
+			PackageManager pm = getActivity().getPackageManager();
+			List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+			boolean isIntentSafe = activities.size() > 0;
+			
+			if (isIntentSafe) {
+				startActivity(i);
+			} // if
+			else {
+				Toast.makeText(getActivity().getApplicationContext(), 
+						R.string.play_store_not_reached, Toast.LENGTH_LONG).show();
+			} // else
+			
+		} // if
+		
+	} // showOtherApps
+
+	private void rateApp() {
+		Uri appUri = Uri.parse("market://details?id=" + APP_PNAME);
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+		
+		//check that there is at least one activity to perform this intent
+		if (getActivity() != null) {
+			PackageManager pm = getActivity().getPackageManager();
+			List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+			boolean isIntentSafe = activities.size() > 0;
+			
+			if (isIntentSafe) {
+				
+				//disable the rate dialog.
+				SharedPreferences prefs = getActivity().getSharedPreferences("apprater", 0);
+				SharedPreferences.Editor editor = prefs.edit();
+				
+				if (editor != null) {
+                    editor.putBoolean("dontshowagain", true);
+                    editor.commit();
+                } // if
+				
+				startActivity(i);
+			} // if
+			else {
+				Toast.makeText(getActivity().getApplicationContext(), 
+						R.string.play_store_not_reached, Toast.LENGTH_LONG).show();
+			} // else
+			
+		} // if
+		
+	} // rateApp
+
+	private void showAbout() {
+		AboutDialog aboutDialog = new AboutDialog();
+		aboutDialog.onAboutClick(getActivity());
+	} // showAbout
+	
+	private void shareApp() {
+		Intent i = new Intent(Intent.ACTION_SEND);
+
+		// check that there is at least one activity to perform this intent
+		if (getActivity() != null) {
+			
+			PackageManager pm = getActivity().getPackageManager();
+			List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+			boolean isIntentSafe = activities.size() > 0;
+
+			if (isIntentSafe) {
+
+				String shareString = (new StringBuilder(
+						getString(R.string.share_string)))
+						.append(" " + getString(R.string.play_store_app_uri))
+						.append(APP_PNAME).toString();
+
+				i.setType("text/plain");
+				i.putExtra(Intent.EXTRA_TEXT, shareString);
+				i.putExtra(Intent.EXTRA_SUBJECT,
+						getString(R.string.share_subject));
+				i = Intent.createChooser(i,
+						getString(R.string.share_app_chooser));
+				startActivity(i);
+
+			} else {
+				Toast.makeText(getActivity().getApplicationContext(),
+						R.string.sharing_error, Toast.LENGTH_LONG).show();
+			} // else
+			
+		} // if
+		
+	} // shareApp
+	
+	private class GridViewAdapter extends BaseAdapter {
+
+		private Context mContext;
+		private final Integer[] appNames;
+		private Integer[] appImages;
+
+		public GridViewAdapter(Context c, Integer[] appNames, Integer[] appImages) {
+			mContext = c;
+			this.appNames = appNames;
+			this.appImages = appImages;
+		}
+
+		public int getCount() {
+			return appImages.length;
+		}
+
+		// should return the item at the given position
+		public Object getItem(int position) {
+			return null;
+		}
+
+		// should return the item's row id.
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		// create and return a new View for each item referenced by the Adapter
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			View gridItemView;
+
+			// if it's not recycled, initialize some attributes
+			if (convertView == null) {
+				gridItemView = inflater.inflate(R.layout.grid_item, null);
+
+			} else {
+				gridItemView = (View) convertView;
+			}
+
+			TextView textView = (TextView) gridItemView
+					.findViewById(R.id.grid_item_title);
+			textView.setText(appNames[position]);
+			textView.setSelected(true);
+			
+			
+			
+			ImageView imageView = (ImageView) gridItemView
+					.findViewById(R.id.grid_item_image);
+			//imageView.setImageResource(appImages[position]);
+			loadBitmap(customImages[position], imageView); // it is used for loading big grid images asynchronously.
+			
+			return gridItemView;
+			
+		} // getView
+		
+	} // GridViewAdapter
+	
+	public void loadBitmap(int resId, ImageView imageView) {
+        if (cancelPotentialWork(resId, imageView)) {
+            if(isAdded())
+            {
+            	final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+            	
+            	final AsyncDrawable asyncDrawable =
+            			new AsyncDrawable(getResources(), mPlaceHolderBitmap, task);
+            	
+            	imageView.setImageDrawable(asyncDrawable);
+            	task.execute(resId);
+            } // if
+        } // if
+    } // loadBitmap
+
+    private static class AsyncDrawable extends BitmapDrawable {
+        private final WeakReference<BitmapWorkerTask> bitmapWorkerTaskReference;
+
+        public AsyncDrawable(Resources res, Bitmap bitmap,
+                BitmapWorkerTask bitmapWorkerTask) {
+            super(res, bitmap);
+            bitmapWorkerTaskReference =
+                new WeakReference<BitmapWorkerTask>(bitmapWorkerTask);
+        }
+
+        public BitmapWorkerTask getBitmapWorkerTask() {
+            return bitmapWorkerTaskReference.get();
+        }
+    }
+
+    public static boolean cancelPotentialWork(int data, ImageView imageView) {
+        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+        if (bitmapWorkerTask != null) {
+            final int bitmapData = bitmapWorkerTask.data;
+            if (bitmapData != data) {
+                // Cancel previous task
+                bitmapWorkerTask.cancel(true);
+            } else {
+                // The same work is already in progress
+                return false;
+            }
+        }
+        // No task associated with the ImageView, or an existing task was cancelled
+        return true;
+    }
+
+    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+       if (imageView != null) {
+           final Drawable drawable = imageView.getDrawable();
+           if (drawable instanceof AsyncDrawable) {
+               final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+               return asyncDrawable.getBitmapWorkerTask();
+           }
+        }
+        return null;
+    }
+
+    private class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+        private final WeakReference<ImageView> imageViewReference;
+        private int data = 0;
+
+        public BitmapWorkerTask(ImageView imageView) {
+            // Use a WeakReference to ensure the ImageView can be garbage collected
+            imageViewReference = new WeakReference<ImageView>(imageView);
+        }
+
+        // Decode image in background.
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            data = params[0];
+            if(isAdded())
+            {
+            	return decodeSampledBitmapFromResource(getResources(), data, 432, 432); // 100, 100 idi.
+            }
+            else
+            {
+            	return mPlaceHolderBitmap;
+            } // else
+        }
+
+        // Once complete, see if ImageView is still around and set bitmap.
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (imageViewReference != null && bitmap != null) {
+                final ImageView imageView = imageViewReference.get();
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+    }
+    
+	public static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and
+			// keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+    
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+            int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, 432, 432);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+	
+} // class AnimeManiaGridFragment

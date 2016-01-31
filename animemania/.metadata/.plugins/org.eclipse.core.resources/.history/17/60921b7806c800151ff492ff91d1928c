@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Аниме Мания</string>
+    <string name="action_overflow">Еще&#8230;</string>
+    <string name="hello_world">Привет, мир!</string>
+    
+    <string name="about_developer">Разработчик: Example Developer</string>
+    <string name="about_developer_email">Электронная почта: example@example.com</string>
+    <string name="app_version">Версия 1.0</string>
+    
+    
+    <string name="casper">Каспер</string>
+    <string name="corneilandbernie">Корнейл и Берни</string>
+    <string name="janggeumsdream">Мечта Джанг Кымгана</string>
+    <string name="lalinea">Линия</string>
+    <string name="madjackthepirate">Бешеный Джек Пират</string>
+    <string name="magination">Анимагия</string>
+    <string name="minuscule">Насекомые</string>
+    <string name="onepiece">Большой Куш</string>
+    <string name="pingu">Пингу</string>
+    <string name="poppetstown">Кукольный Город</string>
+    <string name="sailormoon">Сейлор Мун</string>
+    <string name="sheepintheisland">Овца На Острове</string>
+    <string name="theflintstones">Флинтстоуны</string>
+    <string name="thejetsons">Джетсоны</string>
+    <string name="themask">Маска</string>
+    <string name="thesmurfs">Смурфики</string>
+    <string name="triplets">Тройняшки</string>
+    <string name="trollz">Тролли</string>
+    <string name="yogibear">Мишка Йоги</string>
+    <string name="dragonball">Жемчуг Дракона</string>
+    <string name="louie">Луи</string>
+    <string name="arthur">Артур</string>
+    <string name="bakugan">Бакуган</string>
+    <string name="berrybittyadventures">Приключения Берри Битти</string>
+    <string name="beyblademetalfusion">Бейблэйд: Металлический Сплав</string>
+    <string name="brave10">Десятка Отважных</string>
+    <string name="chloescloset">Шкаф Хлои</string>
+    <string name="chuckandfriends">Чак и Его Друзья</string>
+    <string name="chuggington">Чаггингтон</string>
+    <string name="cityoffriends">Город Друзей</string>
+    <string name="deathnote">Тетрадь Смерти</string>
+    <string name="dexhamilton">Декс Гамильтон</string>
+    <string name="dibothegiftdragon">Подарочный Дракон Дибо</string>
+    <string name="dinosaurtrain">Поезд Динозавров</string>
+    <string name="diveollydive">Олли: Путешественник Океана</string>
+    <string name="dougie">Дуги</string>
+    <string name="emilie">Эмили</string>
+    <string name="erkyperky">Эрки Перки</string>
+    <string name="everythingsrosie">Мир Рози</string>
+    <string name="firemansam">Пожарный Сэм</string>
+    <string name="flashanddash">Флаш и Дашь</string>
+    <string name="ggofootball">ГГО Футбол</string>
+    <string name="gormiti">Гормити</string>
+    <string name="greensquad">Зеленый Отряд</string>
+    <string name="iamananimal">День Животных</string>
+    <string name="jibberjabber">Гиббер и Жаббер</string>
+    <string name="justiceleague">Лига Справедливости</string>
+    <string name="laurasstar">Звезда Лоры</string>
+    <string name="leon">Леон</string>
+    <string name="littlebrownbear">Маленький Бурый Медведь</string>
+    <string name="littlecharleybear">Маленький Медведь Чарли</string>
+    <string name="lose">Л.О.С.Э</string>
+    <string name="lulu">Лулу</string>
+    <string name="martine">Мартине</string>
+    <string name="maxsteel">Макс Стил</string>
+    <string name="mayathebee">Приключения Пчёлки Майи</string>
+    <string name="millymolly">Милли, Молли</string>
+    <string name="monsieurloutre">Господин Выдра</string>
+    <string name="monsuno">Монсуно</string>
+    <string name="mrmoon">Господин Мун</string>
+    <string name="mybigfriend">Мой Большой Друг</string>
+    <string name="noonbory">Нунбори</string>
+    <string name="oscarsoasis">Оазис Оскара</string>
+    <string name="patchpillows">Пропатченные Подушки</string>
+    <string name="pimandpom">Пим и Пом</string>
+    <string name="pippilongstocking">Пеппи Длинныйчулок</string>
+    <string name="poppycat">Киска</string>
+    <string name="promotransformersrescuebots">П.Т.Р.Б</string>
+    <string name="punky">Панки</string>
+    <string name="roaryroary">Рори Гоночная Тачка</string>
+    <string name="saladin">Саладин</string>
+    <string name="shaunthesheep">Барашек Шон</string>
+    <string name="stellandsam">Стелла и Сэм</string>
+    <string name="stellina">Стеллина</string>
+    <string name="thegees">Гисы</string>
+    <string name="thelittleprince">Маленький Принц</string>
+    <string name="thesmallgiant">Маленький Гигант</string>
+    <string name="thewotwots">Вотвотсы</string>
+    <string name="thomasandfriends">Томас и Его Друзья</string>
+    <string name="ticketytoc">Тикети Ток</string>
+    <string name="tinyplanets">Крошечные Планеты</string>
+    <string name="tototrouble">Toтo: Нарушитель</string>
+    <string name="trotro">Тротро</string>
+    <string name="vroomiz">Врумиз</string>
+    <string name="wildkratts">Братья Kratt</string>
+    <string name="woodlies">Вудлиз</string>
+    <string name="woofy">Вуфи</string>
+    <string name="yummytoonies">Вкусный Мультяшки</string>
+    <string name="zekespad">Магический Планшет</string>
+    <string name="spiderman">Человек-Паук</string>
+    
+    
+    <string name="cache_cleared">Кэш Очищено Успешно!</string>
+    <string name="action_clear_cache">Очистить Кэш</string>
+    <string name="sharing_error">Никакие Приложения Не Найдено Для Совместного Использования!</string>
+    <string name="back_clicked">Пожалуйста, Нажмите \"BACK\" Снова, Чтобы Выйти!</string>
+    <string name="action_item_source_1">Источник 1</string>
+    <string name="action_item_source_2">Источник 2</string>
+    
+    <string name="promotion_dialog_title">Пример для рекламы приложений</string>
+    <string name="promotion_dialog_later_button_title">Позже</string>
+    <string name="promotion_dialog_install_button_title">Установить</string>
+    
+    <string name="action_search">Поиск</string>
+    <string name="action_share">Поделиться</string>
+    <string name="action_rate">Оценить!</string>
+    <string name="action_other_apps">Другие Приложения</string>
+    <string name="action_extra_settings">Настройки</string>
+    <string name="action_about">О Приложении</string>
+    <string name="action_exit">Выход</string>
+    <string name="action_refresh_list">Обновить Список</string>
+    
+    
+    <string name="loading_error_dialog_title">Ошибка Загрузки&#8230;</string>
+    <string name="loading_error_dialog_message">Соединение с Интернетом медленное или не существует.</string>
+    <string name="loading_error_dialog_retry_button_title">Повторить</string>
+    <string name="loading_error_dialog_cancel_button_title">Отменить</string>
+    
+    <string name="rate_dialog_title">Оценить?!</string>
+    <string name="rate_dialog_message">Если вам нравиться использовать \"Аниме Мания\", пожалуйста, 
+        найдите время, чтобы оценить его. Спасибо за вашу поддержку!
+        </string>
+    <string name="rate_dialog_later_button_title">Позже</string>
+    <string name="rate_dialog_rate_button_title">Оценить!</string>
+    
+    
+    <string name="video_activity_error">К сожалению, это видео не могут быть воспроизведены.
+        \nПожалуйста, попробуйте другой источник.
+    </string>
+    <string name="episodelist_activity_error">Пожалуйста, проверьте соединение с интернетом!</string>
+    <string name="cartoon_activity_error">Сервер занят, повторите попытку позже.</string>
+    
+    <string name="share_app_chooser">Поделитесь этим приложением с помощью</string>
+    <string name="share_subject">Проверьте этот андроид приложения! </string>
+    <string name="play_store_app_uri">https://play.google.com/store/apps/details?id=</string>
+    <string name="share_string">Величайший приложение для Android, доступен на Play Market, </string>
+    <string name="play_store_not_reached">Play Маркет не доступен!</string>
+    
+    <!-- start episode and season names -->
+    
+    <string name="casper_series_name">Каспер Эпизод</string>
+    
+    <string name="corneilandbernie_series_name">Корнейл Эпизод</string>
+    
+    <string name="janggeumsdream_series_name">Джанг Кымган Эпизод</string>
+    
+    <string name="lalinea_series_name">Линия Эпизод</string>
+    
+    <string name="madjackthepirate_series_name">Бешеный Джек Эпизод</string>
+    
+    <string name="magination_series_name">Анимагия Эпизод</string>
+    
+    <string name="minuscule_series_name">Насекомые Эпизод</string>
+    
+    <string name="onepiece_series_name">Большой Куш Эпизод</string>
+    
+    <string name="pingu_series_name">Пингу Эпизод</string>
+    
+    <string name="poppetstown_series_name">Кукольный Город Эпизод</string>
+    
+    <string name="sailormoon_series_name">Сейлор Мун Эпизод</string>
+    
+    <string name="sheepintheisland_series_name">Овца Эпизод</string>
+    
+    <string name="theflintstones_series_name">Флинтстоуны Эпизод</string>
+    
+    <string name="thejetsons_series_name">Джетсоны Эпизод</string>
+    
+    <string name="themask_series_name">Маска Эпизод</string>
+    
+    <string name="thesmurfs_series_name">Смурфики Эпизод</string>
+    
+    <string name="triplets_series_name">Тройняшки Эпизод</string>
+    
+    <string name="trollz_series_name">Тролли Эпизод</string>
+    
+    <string name="yogibear_series_name">Мишка Йоги Эпизод</string>
+    
+    <string name="dragonball_series_name">Жемчуг Дракона Эпизод</string>
+    
+    <string name="louie_series_name">Луи Эпизод</string>
+    
+    <string name="arthur_series_name">Артур Эпизод</string>
+    
+    <string name="bakugan_series_name">Бакуган Эпизод</string>
+    
+    <string name="berrybittyadventures_series_name">Берри Битти Эпизод</string>
+    
+    <string name="beyblademetalfusion_series_name">Бейблэйд Эпизод</string>
+    
+    <string name="brave10_series_name">Десятка Отважных Эпизод</string>
+    
+    <string name="chloescloset_series_name">Шкаф Хлои Эпизод</string>
+    
+    <string name="chuckandfriends_series_name">Чак Эпизод</string>
+    
+    <string name="chuggington_series_name">Чаггингтон Эпизод</string>
+    
+    <string name="cityoffriends_series_name">Город Друзей Эпизод</string>
+    
+    <string name="deathnote_series_name">Тетрадь Смерти Эпизод</string>
+    
+    <string name="dexhamilton_series_name">Декс Гамильтон Эпизод</string>
+    
+    <string name="dibothegiftdragon_series_name">Дибо Эпизод</string>
+    
+    <string name="dinosaurtrain_series_name">Поезд Динозавров Эпизод</string>
+    
+    <string name="diveollydive_series_name">Олли Эпизод</string>
+    
+    <string name="dougie_series_name">Дуги Эпизод</string>
+    
+    <string name="emilie_series_name">Эмили Эпизод</string>
+    
+    <string name="erkyperky_series_name">Эрки Перки Эпизод</string>
+    
+    <string name="everythingsrosie_series_name">Мир Рози Эпизод</string>
+    
+    <string name="firemansam_series_name">Пожарный Сэм Эпизод</string>
+    
+    <string name="flashanddash_series_name">Флаш и Дашь Эпизод</string>
+    
+    <string name="ggofootball_series_name">ГГО Футбол Эпизод</string>
+    
+    <string name="gormiti_series_name">Гормити Эпизод</string>
+    
+    <string name="greensquad_series_name">Зеленый Отряд Эпизод</string>
+    
+    <string name="iamananimal_series_name">День Животных Эпизод</string>
+    
+    <string name="jibberjabber_series_name">Гиббер и Жаббер Эпизод</string>
+    
+    <string name="justiceleague_series_name">Лига Справедливости Эпизод</string>
+    
+    <string name="laurasstar_series_name">Звезда Лоры Эпизод</string>
+    
+    <string name="leon_series_name">Леон Эпизод</string>
+    
+    <string name="littlebrownbear_series_name">Бурый Медведь Эпизод</string>
+    
+    <string name="littlecharleybear_series_name">Медведь Чарли Эпизод</string>
+    
+    <string name="lose_series_name">Л.О.С.Э Эпизод</string>
+    
+    <string name="lulu_series_name">Лулу Эпизод</string>
+    
+    <string name="martine_series_name">Мартине Эпизод</string>
+    
+    <string name="maxsteel_series_name">Макс Стил Эпизод</string>
+    
+    <string name="mayathebee_series_name">Майа Эпизод</string>
+    
+    <string name="millymolly_series_name">Милли, Молли Эпизод</string>
+    
+    <string name="monsieurloutre_series_name">Господин Выдра Эпизод</string>
+    
+    <string name="monsuno_series_name">Монсуно Эпизод</string>
+    
+    <string name="mrmoon_series_name">Господин Мун Эпизод</string>
+    
+    <string name="mybigfriend_series_name">Большой Друг Эпизод</string>
+    
+    <string name="noonbory_series_name">Нунбори Эпизод</string>
+    
+    <string name="oscarsoasis_series_name">Оскар Эпизод</string>
+    
+    <string name="patchpillows_series_name">Подушки Эпизод</string>
+    
+    <string name="pimandpom_series_name">Пим и Пом Эпизод</string>
+    
+    <string name="pippilongstocking_series_name">Пеппи Эпизод</string>
+    
+    <string name="poppycat_series_name">Киска Эпизод</string>
+    
+    <string name="promotransformersrescuebots_series_name">П.Т.Р.Б Эпизод</string>
+    
+    <string name="punky_series_name">Панки Эпизод</string>
+    
+    <string name="roaryroary_series_name">Рори Эпизод</string>
+    
+    <string name="saladin_series_name">Саладин Эпизод</string>
+    
+    <string name="shaunthesheep_series_name">Барашек Шон Эпизод</string>
+    
+    <string name="stellandsam_series_name">Стелла и Сэм Эпизод</string>
+    
+    <string name="stellina_series_name">Стеллина Эпизод</string>
+    
+    <string name="thegees_series_name">Гисы Эпизод</string>
+    
+    <string name="thelittleprince_series_name">Маленький Принц Эпизод</string>
+    
+    <string name="thesmallgiant_series_name">Маленький Гигант Эпизод</string>
+    
+    <string name="thewotwots_series_name">Вотвотсы Эпизод</string>
+    
+    <string name="thomasandfriends_series_name">Томас Эпизод</string>
+    
+    <string name="ticketytoc_series_name">Тикети Ток Эпизод</string>
+    
+    <string name="tinyplanets_series_name">Планеты Эпизод</string>
+    
+    <string name="tototrouble_series_name">Toтo: Нарушитель Эпизод</string>
+    
+    <string name="trotro_series_name">Тротро Эпизод</string>
+    
+    <string name="vroomiz_series_name">Врумиз Эпизод</string>
+    
+    <string name="wildkratts_series_name">Братья Kratt Эпизод</string>
+    
+    <string name="woodlies_series_name">Вудлиз Эпизод</string>
+    
+    <string name="woofy_series_name">Вуфи Эпизод</string>
+    
+    <string name="yummytoonies_series_name">Вкусный Мультяшки Эпизод</string>
+    
+    <string name="zekespad_series_name">Магический Планшет Эпизод</string>
+    
+    <string name="spiderman_series_name">Человек-Паук Эпизод</string>
+    
+    <!-- end episode and season names -->
+
+</resources>

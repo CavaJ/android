@@ -1,0 +1,1312 @@
+package com.example.animemania.activity;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.example.animemania.AboutDialog;
+import com.example.animemania.R;
+import com.example.animemania.adapter.ListViewAdapter;
+import com.example.animemania.constant.Constants;
+import com.example.animemania.model.AnimeSeries;
+import com.example.animemania.utility.FileCache;
+import com.example.animemania.utility.InternetConnectionChecker;
+import com.example.animemania.utility.Utils;
+import com.example.animemania.utility.XMLParser;
+
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface.OnKeyListener;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class AnimeListActivity extends ActionBarActivity {
+	
+	// All static variables
+	
+	public static final String EXTRA_POSITION = "com.example.animemania.position";
+	//public static final String EXTRA_URL = "com.example.animemania.url";
+	private final static String APP_PNAME = "com.example.animemania";
+	private static final String KEY_EPISODE_NAME="episode_name";
+	private static final String KEY_SEASON_NAME="season_name";
+	// XML node keys
+	
+	
+	private ListView mListView;
+	private ProgressBar mProgressBar;
+	private AdView mAdView;
+	private AdRequest mAdRequestBanner;
+	private InterstitialAd mInterstitialAd;
+	private InternetConnectionChecker mInternetConnectionChecker;
+	private String mURL;
+	private EpisodeListDownloader mEpisodeListDownloader;
+	private AnimeSeries mAnimeSeries;
+	
+	private Uri mVideoUri1;
+	private Uri mVideoUri2;
+	
+	/**
+	 * Listview selected row
+	 */
+	private int mSelectedRow = 0;
+	
+	/**
+	 * Right arrow icon on each listview row
+	 */
+	private ImageView mMoreIv = null;
+	
+	private QuickAction mQuickAction;
+	
+	private static final int ID_SOURCE_1 = 1;
+	private static final int ID_SOURCE_2 = 2;
+	
+	private AlertDialog.Builder connectionCheckerDialog;
+	//private AlertDialog.Builder choiceDialog;
+	private AlertDialog.Builder loadingErrorDialog;
+	
+	private String loadingErrorDialogMessage;
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_anime_list);
+	    
+		
+		if (android.os.Build.VERSION.SDK_INT > 9) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+					.permitAll().build();
+			StrictMode.setThreadPolicy(policy);
+		}
+
+		mListView = (ListView) findViewById(R.id.series_list_view);
+		
+		mProgressBar = (ProgressBar) findViewById(R.id.series_progress_bar);
+		
+		if (NavUtils.getParentActivityName(this) != null) { 
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		} // if
+		
+		mInternetConnectionChecker = new InternetConnectionChecker(this); // connection
+															// detector
+		
+		//choiceDialog = new AlertDialog.Builder(this);
+		connectionCheckerDialog = new AlertDialog.Builder(this);
+		
+		loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+		
+		//in on back pressed from the dialog finish the activity.
+		connectionCheckerDialog.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					onBackPressed();
+					dialog.dismiss();
+				}
+				return true;
+			}
+		});
+		
+		Intent i = getIntent();
+		int position = i.getIntExtra(EXTRA_POSITION, 0);
+		
+		//customize the action bar.
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowTitleEnabled(false);
+		
+		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		View v = inflater.inflate(R.layout.title_actionbar, null);
+		
+		TextView actionBarTitleTextView = (TextView) v.findViewById(R.id.actionbar_title_textview);
+		actionBarTitleTextView.setSelected(true);
+		actionBar.setCustomView(v);
+		
+		
+		mAnimeSeries = new AnimeSeries();
+		
+		if (savedInstanceState != null) {
+			if (mAnimeSeries != null) {
+				mAnimeSeries.setSeriesName(savedInstanceState.getString(
+						KEY_EPISODE_NAME, null));
+				mAnimeSeries.setSeasonName(savedInstanceState.getString(
+						KEY_SEASON_NAME, null));
+			} // if
+		} // if
+		
+		switch (position) {
+		case 0:
+			mURL = Utils.decrypt(Constants.URLCasper, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.casper);
+			actionBar.setIcon(R.drawable.casper);
+			mAnimeSeries.setSeriesName(getString(R.string.casper_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.casper));
+			break;
+		case 1:
+			mURL = Utils.decrypt(Constants.URLLouie, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.louie);
+			actionBar.setIcon(R.drawable.louie);
+			mAnimeSeries.setSeriesName(getString(R.string.louie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.louie));
+			break;
+		case 2:
+			mURL = Utils.decrypt(Constants.URLJang, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.janggeumsdream);
+			actionBar.setIcon(R.drawable.janggeumsdream);
+			mAnimeSeries.setSeriesName(getString(R.string.janggeumsdream_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.janggeumsdream));
+			break;
+		case 3:
+			mURL = Utils.decrypt(Constants.URLLaLinea, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.lalinea);
+			actionBar.setIcon(R.drawable.lalinea);
+			mAnimeSeries.setSeriesName(getString(R.string.lalinea_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.lalinea));
+			break;
+		case 4:
+			mURL = Utils.decrypt(Constants.URLMadJack, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.madjackthepirate);
+			actionBar.setIcon(R.drawable.madjackthepirate);
+			mAnimeSeries.setSeriesName(getString(R.string.madjackthepirate_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.madjackthepirate));
+			break;
+		case 5:
+			mURL = Utils.decrypt(Constants.URLMagiNation, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.magination);
+			actionBar.setIcon(R.drawable.magination);
+			mAnimeSeries.setSeriesName(getString(R.string.magination_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.magination));
+			break;
+		case 6:
+			mURL = Utils.decrypt(Constants.URLMinuscule, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.minuscule);
+			actionBar.setIcon(R.drawable.minuscule);
+			mAnimeSeries.setSeriesName(getString(R.string.minuscule_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.minuscule));
+			break;
+		case 7:
+			mURL = Utils.decrypt(Constants.URLOnePiece, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.onepiece);
+			actionBar.setIcon(R.drawable.onepiece);
+			mAnimeSeries.setSeriesName(getString(R.string.onepiece_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.onepiece));
+			break;
+		case 8:
+			mURL = Utils.decrypt(Constants.URLPingu, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.pingu);
+			actionBar.setIcon(R.drawable.pingu);
+			mAnimeSeries.setSeriesName(getString(R.string.pingu_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.pingu));
+			break;
+		case 9:
+			mURL = Utils.decrypt(Constants.URLPoppets, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.poppetstown);
+			actionBar.setIcon(R.drawable.poppetstown);
+			mAnimeSeries.setSeriesName(getString(R.string.poppetstown_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.poppetstown));
+			break;
+		case 10:
+			mURL = Utils.decrypt(Constants.URLSailorMoon, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.sailormoon);
+			actionBar.setIcon(R.drawable.sailormoon);
+			mAnimeSeries.setSeriesName(getString(R.string.sailormoon_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.sailormoon));
+			break;
+		case 11:
+			mURL = Utils.decrypt(Constants.URLSheepInTheIsland, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.sheepintheisland);
+			actionBar.setIcon(R.drawable.sheepintheisland);
+			mAnimeSeries.setSeriesName(getString(R.string.sheepintheisland_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.sheepintheisland));
+			break;
+		case 12:
+			mURL = Utils.decrypt(Constants.URLTheFlintstones, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.theflintstones);
+			actionBar.setIcon(R.drawable.theflintstones);
+			mAnimeSeries.setSeriesName(getString(R.string.theflintstones_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.theflintstones));
+			break;
+		case 13:
+			mURL = Utils.decrypt(Constants.URLTheJetsons, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thejetsons);
+			actionBar.setIcon(R.drawable.thejetsons);
+			mAnimeSeries.setSeriesName(getString(R.string.thejetsons_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thejetsons));
+			break;
+		case 14:
+			mURL = Utils.decrypt(Constants.URLTheMask, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.themask);
+			actionBar.setIcon(R.drawable.themask);
+			mAnimeSeries.setSeriesName(getString(R.string.themask_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.themask));
+			break;
+		case 15:
+			mURL = Utils.decrypt(Constants.URLTheSmurfs, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thesmurfs);
+			actionBar.setIcon(R.drawable.thesmurfs);
+			mAnimeSeries.setSeriesName(getString(R.string.thesmurfs_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thesmurfs));
+			break;
+		case 16:
+			mURL = Utils.decrypt(Constants.URLTriplets, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.triplets);
+			actionBar.setIcon(R.drawable.triplets);
+			mAnimeSeries.setSeriesName(getString(R.string.triplets_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.triplets));
+			break;
+		case 17:
+			mURL = Utils.decrypt(Constants.URLTrollz, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.trollz);
+			actionBar.setIcon(R.drawable.trollz);
+			mAnimeSeries.setSeriesName(getString(R.string.trollz_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.trollz));
+			break;
+		case 18:
+			mURL = Utils.decrypt(Constants.URLYogiBear, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.yogibear);
+			actionBar.setIcon(R.drawable.yogibear);
+			mAnimeSeries.setSeriesName(getString(R.string.yogibear_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.yogibear));
+			break;
+		case 19:
+			mURL = Utils.decrypt(Constants.URLDragonBall, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.dragonball);
+			actionBar.setIcon(R.drawable.dragonball);
+			mAnimeSeries.setSeriesName(getString(R.string.dragonball_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.dragonball));
+			break;
+		case 20:
+			mURL = Utils.decrypt(Constants.URLCorneil, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.corneilandbernie);
+			actionBar.setIcon(R.drawable.corneilandbernie);
+			mAnimeSeries.setSeriesName(getString(R.string.corneilandbernie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.corneilandbernie));
+			break;
+		case 21:
+			mURL = Utils.decrypt(Constants.URLArthur, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.arthur);
+			actionBar.setIcon(R.drawable.arthur);
+			mAnimeSeries.setSeriesName(getString(R.string.arthur_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.arthur));
+			break;
+		case 22:
+			mURL = Utils.decrypt(Constants.URLBakugan, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.bakugan);
+			actionBar.setIcon(R.drawable.bakugan);
+			mAnimeSeries.setSeriesName(getString(R.string.bakugan_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.bakugan));
+			break;
+		case 23:
+			mURL = Utils.decrypt(Constants.URLBerryBitty, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.berrybittyadventures);
+			actionBar.setIcon(R.drawable.berrybittyadventures);
+			mAnimeSeries.setSeriesName(getString(R.string.berrybittyadventures_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.berrybittyadventures));
+			break;
+		case 24:
+			mURL = Utils.decrypt(Constants.URLBeybaldeMetalFusion, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.beyblademetalfusion);
+			actionBar.setIcon(R.drawable.beyblademetalfusion);
+			mAnimeSeries.setSeriesName(getString(R.string.beyblademetalfusion_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.beyblademetalfusion));
+			break;
+		case 25: 
+			mURL = Utils.decrypt(Constants.URLBrave10, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.brave10);
+			actionBar.setIcon(R.drawable.brave10);
+			mAnimeSeries.setSeriesName(getString(R.string.brave10_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.brave10));
+			break;
+		case 26:
+			mURL = Utils.decrypt(Constants.URLChloesCloset, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.chloescloset);
+			actionBar.setIcon(R.drawable.chloescloset);
+			mAnimeSeries.setSeriesName(getString(R.string.chloescloset_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.chloescloset));
+			break;
+		case 27:
+			mURL = Utils.decrypt(Constants.URLChuckAndFriends, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.chuckandfriends);
+			actionBar.setIcon(R.drawable.chuckandfriends);
+			mAnimeSeries.setSeriesName(getString(R.string.chuckandfriends_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.chuckandfriends));
+			break;
+		case 28:
+			mURL = Utils.decrypt(Constants.URLChuggington, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.chuggington);
+			actionBar.setIcon(R.drawable.chuggington);
+			mAnimeSeries.setSeriesName(getString(R.string.chuggington_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.chuggington));
+			break;
+		case 29:
+			mURL = Utils.decrypt(Constants.URLCityOfFriends, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.cityoffriends);
+			actionBar.setIcon(R.drawable.cityoffriends);
+			mAnimeSeries.setSeriesName(getString(R.string.cityoffriends_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.cityoffriends));
+			break;
+		case 30:
+			mURL = Utils.decrypt(Constants.URLDeathNote, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.deathnote);
+			actionBar.setIcon(R.drawable.deathnote);
+			mAnimeSeries.setSeriesName(getString(R.string.deathnote_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.deathnote));
+			break;
+		case 31:
+			mURL = Utils.decrypt(Constants.URLDexHamilton, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.dexhamilton);
+			actionBar.setIcon(R.drawable.dexhamilton);
+			mAnimeSeries.setSeriesName(getString(R.string.dexhamilton_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.dexhamilton));
+			break;
+		case 32:
+			mURL = Utils.decrypt(Constants.URLDibo, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.dibothegiftdragon);
+			actionBar.setIcon(R.drawable.dibothegiftdragon);
+			mAnimeSeries.setSeriesName(getString(R.string.dibothegiftdragon_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.dibothegiftdragon));
+			break;
+		case 33:
+			mURL = Utils.decrypt(Constants.URLDinosaurTrain, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.dinosaurtrain);
+			actionBar.setIcon(R.drawable.dinosaurtrain);
+			mAnimeSeries.setSeriesName(getString(R.string.dinosaurtrain_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.dinosaurtrain));
+			break;
+		case 34:
+			mURL = Utils.decrypt(Constants.URLDiveOllyDive, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.diveollydive);
+			actionBar.setIcon(R.drawable.diveollydive);
+			mAnimeSeries.setSeriesName(getString(R.string.diveollydive_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.diveollydive));
+			break;
+		case 35:
+			mURL = Utils.decrypt(Constants.URLDougie, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.dougie);
+			actionBar.setIcon(R.drawable.dougie);
+			mAnimeSeries.setSeriesName(getString(R.string.dougie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.dougie));
+			break;
+		case 36:
+			mURL = Utils.decrypt(Constants.URLEmilie, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.emilie);
+			actionBar.setIcon(R.drawable.emilie);
+			mAnimeSeries.setSeriesName(getString(R.string.emilie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.emilie));
+			break;
+		case 37:
+			mURL = Utils.decrypt(Constants.URLErkyPerky, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.erkyperky);
+			actionBar.setIcon(R.drawable.erkyperky);
+			mAnimeSeries.setSeriesName(getString(R.string.erkyperky_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.erkyperky));
+			break;
+		case 38:
+			mURL = Utils.decrypt(Constants.URLEverythingsRosie, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.everythingsrosie);
+			actionBar.setIcon(R.drawable.everythingsrosie);
+			mAnimeSeries.setSeriesName(getString(R.string.everythingsrosie_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.everythingsrosie));
+			break;
+		case 39:
+			mURL = Utils.decrypt(Constants.URLFiremanSam, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.firemansam);
+			actionBar.setIcon(R.drawable.firemansam);
+			mAnimeSeries.setSeriesName(getString(R.string.firemansam_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.firemansam));
+			break;
+		case 40:
+			mURL = Utils.decrypt(Constants.URLFlashDash, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.flashanddash);
+			actionBar.setIcon(R.drawable.flashanddash);
+			mAnimeSeries.setSeriesName(getString(R.string.flashanddash_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.flashanddash));
+			break;
+		case 41:
+			mURL = Utils.decrypt(Constants.URLGgoFootball, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.ggofootball);
+			actionBar.setIcon(R.drawable.ggofootball);
+			mAnimeSeries.setSeriesName(getString(R.string.ggofootball_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.ggofootball));
+			break;
+		case 42:
+			mURL = Utils.decrypt(Constants.URLGormiti, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.gormiti);
+			actionBar.setIcon(R.drawable.gormiti);
+			mAnimeSeries.setSeriesName(getString(R.string.gormiti_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.gormiti));
+			break;
+		case 43:
+			mURL = Utils.decrypt(Constants.URLGreenSquad, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.greensquad);
+			actionBar.setIcon(R.drawable.greensquad);
+			mAnimeSeries.setSeriesName(getString(R.string.greensquad_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.greensquad));
+			break;
+		case 44:
+			mURL = Utils.decrypt(Constants.URLIamAnAnimal, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.iamananimal);
+			actionBar.setIcon(R.drawable.iamananimal);
+			mAnimeSeries.setSeriesName(getString(R.string.iamananimal_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.iamananimal));
+			break;
+		case 45:
+			mURL = Utils.decrypt(Constants.URLJibberJabber, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.jibberjabber);
+			actionBar.setIcon(R.drawable.jibberjabber);
+			mAnimeSeries.setSeriesName(getString(R.string.jibberjabber_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.jibberjabber));
+			break;
+		case 46:
+			mURL = Utils.decrypt(Constants.URLJusticeLeague, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.justiceleague);
+			actionBar.setIcon(R.drawable.justiceleague);
+			mAnimeSeries.setSeriesName(getString(R.string.justiceleague_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.justiceleague));
+			break;
+		case 47:
+			mURL = Utils.decrypt(Constants.URLLaurasStar, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.laurasstar);
+			actionBar.setIcon(R.drawable.laurasstar);
+			mAnimeSeries.setSeriesName(getString(R.string.laurasstar_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.laurasstar));
+			break;
+		case 48:
+			mURL = Utils.decrypt(Constants.URLLeon, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.leon);
+			actionBar.setIcon(R.drawable.leon);
+			mAnimeSeries.setSeriesName(getString(R.string.leon_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.leon));
+			break;
+		case 49:
+			mURL = Utils.decrypt(Constants.URLLittleBrownBear, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.littlebrownbear);
+			actionBar.setIcon(R.drawable.littlebrownbear);
+			mAnimeSeries.setSeriesName(getString(R.string.littlebrownbear_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.littlebrownbear));
+			break;
+		case 50:
+			mURL = Utils.decrypt(Constants.URLLittleCharleyBear, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.littlecharleybear);
+			actionBar.setIcon(R.drawable.littlecharleybear);
+			mAnimeSeries.setSeriesName(getString(R.string.littlecharleybear_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.littlecharleybear));
+			break;
+		case 51:
+			mURL = Utils.decrypt(Constants.URLLOSE, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.lose);
+			actionBar.setIcon(R.drawable.lose);
+			mAnimeSeries.setSeriesName(getString(R.string.lose_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.lose));
+			break;
+		case 52:
+			mURL = Utils.decrypt(Constants.URLLulu, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.lulu);
+			actionBar.setIcon(R.drawable.lulu);
+			mAnimeSeries.setSeriesName(getString(R.string.lulu_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.lulu));
+			break;
+		case 53:
+			mURL = Utils.decrypt(Constants.URLMartine, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.martine);
+			actionBar.setIcon(R.drawable.martine);
+			mAnimeSeries.setSeriesName(getString(R.string.martine_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.martine));
+			break;
+		case 54:
+			mURL = Utils.decrypt(Constants.URLMaxSteel, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.maxsteel);
+			actionBar.setIcon(R.drawable.maxsteel);
+			mAnimeSeries.setSeriesName(getString(R.string.maxsteel_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.maxsteel));
+			break;
+		case 55:
+			mURL = Utils.decrypt(Constants.URLMaya, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.mayathebee);
+			actionBar.setIcon(R.drawable.mayathebee);
+			mAnimeSeries.setSeriesName(getString(R.string.mayathebee_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.mayathebee));
+			break;
+		case 56:
+			mURL = Utils.decrypt(Constants.URLMillyMolly, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.millymolly);
+			actionBar.setIcon(R.drawable.millymolly);
+			mAnimeSeries.setSeriesName(getString(R.string.millymolly_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.millymolly));
+			break;
+		case 57:
+			mURL = Utils.decrypt(Constants.URLMonsierLoutre, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.monsieurloutre);
+			actionBar.setIcon(R.drawable.monsieurloutre);
+			mAnimeSeries.setSeriesName(getString(R.string.monsieurloutre_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.monsieurloutre));
+			break;
+		case 58:
+			mURL = Utils.decrypt(Constants.URLMonsuno, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.monsuno);
+			actionBar.setIcon(R.drawable.monsuno);
+			mAnimeSeries.setSeriesName(getString(R.string.monsuno_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.monsuno));
+			break;
+		case 59:
+			mURL = Utils.decrypt(Constants.URLMrMoon, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.mrmoon);
+			actionBar.setIcon(R.drawable.mrmoon);
+			mAnimeSeries.setSeriesName(getString(R.string.mrmoon_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.mrmoon));
+			break;
+		case 60:
+			mURL = Utils.decrypt(Constants.URLMyBigFriend, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.mybigfriend);
+			actionBar.setIcon(R.drawable.mybigfriend);
+			mAnimeSeries.setSeriesName(getString(R.string.mybigfriend_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.mybigfriend));
+			break;
+		case 61:
+			mURL = Utils.decrypt(Constants.URLNoonbory, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.noonbory);
+			actionBar.setIcon(R.drawable.noonbory);
+			mAnimeSeries.setSeriesName(getString(R.string.noonbory_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.noonbory));
+			break;
+		case 62:
+			mURL = Utils.decrypt(Constants.URLOscar, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.oscarsoasis);
+			actionBar.setIcon(R.drawable.oscarsoasis);
+			mAnimeSeries.setSeriesName(getString(R.string.oscarsoasis_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.oscarsoasis));
+			break;
+		case 63:
+			mURL = Utils.decrypt(Constants.URLPatchPillows, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.patchpillows);
+			actionBar.setIcon(R.drawable.patchpillows);
+			mAnimeSeries.setSeriesName(getString(R.string.patchpillows_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.patchpillows));
+			break;
+		case 64:
+			mURL = Utils.decrypt(Constants.URLPimAndPom, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.pimandpom);
+			actionBar.setIcon(R.drawable.pimandpom);
+			mAnimeSeries.setSeriesName(getString(R.string.pimandpom_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.pimandpom));
+			break;
+		case 65:
+			mURL = Utils.decrypt(Constants.URLPippi, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.pippilongstocking);
+			actionBar.setIcon(R.drawable.pippilongstocking);
+			mAnimeSeries.setSeriesName(getString(R.string.pippilongstocking_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.pippilongstocking));
+			break;
+		case 66:
+			mURL = Utils.decrypt(Constants.URLPoppyCat, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.poppycat);
+			actionBar.setIcon(R.drawable.poppycat);
+			mAnimeSeries.setSeriesName(getString(R.string.poppycat_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.poppycat));
+			break;
+		case 67:
+			mURL = Utils.decrypt(Constants.URLPromoTransformers, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.promotransformersrescuebots);
+			actionBar.setIcon(R.drawable.promotransformersrescuebots);
+			mAnimeSeries.setSeriesName(getString(R.string.promotransformersrescuebots_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.promotransformersrescuebots));
+			break;
+		case 68:
+			mURL = Utils.decrypt(Constants.URLPunky, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.punky);
+			actionBar.setIcon(R.drawable.punky);
+			mAnimeSeries.setSeriesName(getString(R.string.punky_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.punky));
+			break;
+		case 69:
+			mURL = Utils.decrypt(Constants.URLRoary, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.roaryroary);
+			actionBar.setIcon(R.drawable.roaryroary);
+			mAnimeSeries.setSeriesName(getString(R.string.roaryroary_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.roaryroary));
+			break;
+		case 70:
+			mURL = Utils.decrypt(Constants.URLSaladin, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.saladin);
+			actionBar.setIcon(R.drawable.saladin);
+			mAnimeSeries.setSeriesName(getString(R.string.saladin_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.saladin));
+			break;
+		case 71:
+			mURL = Utils.decrypt(Constants.URLShaunTheSheep, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.shaunthesheep);
+			actionBar.setIcon(R.drawable.shaunthesheep);
+			mAnimeSeries.setSeriesName(getString(R.string.shaunthesheep_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.shaunthesheep));
+			break;
+		case 72:
+			mURL = Utils.decrypt(Constants.URLStellaAndSam, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.stellandsam);
+			actionBar.setIcon(R.drawable.stellandsam);
+			mAnimeSeries.setSeriesName(getString(R.string.stellandsam_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.stellandsam));
+			break;
+		case 73:
+			mURL = Utils.decrypt(Constants.URLStellina, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.stellina);
+			actionBar.setIcon(R.drawable.stellina);
+			mAnimeSeries.setSeriesName(getString(R.string.stellina_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.stellina));
+			break;
+		case 74:
+			mURL = Utils.decrypt(Constants.URLTheGees, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thegees);
+			actionBar.setIcon(R.drawable.thegees);
+			mAnimeSeries.setSeriesName(getString(R.string.thegees_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thegees));
+			break;
+		case 75:
+			mURL = Utils.decrypt(Constants.URLTheLittlePrince, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thelittleprince);
+			actionBar.setIcon(R.drawable.thelittleprince);
+			mAnimeSeries.setSeriesName(getString(R.string.thelittleprince_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thelittleprince));
+			break;
+		case 76:
+			mURL = Utils.decrypt(Constants.URLTheSmallGiant, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thesmallgiant);
+			actionBar.setIcon(R.drawable.thesmallgiant);
+			mAnimeSeries.setSeriesName(getString(R.string.thesmallgiant_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thesmallgiant));
+			break;
+		case 77:
+			mURL = Utils.decrypt(Constants.URLTheWotwots, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thewotwots);
+			actionBar.setIcon(R.drawable.thewotwots);
+			mAnimeSeries.setSeriesName(getString(R.string.thewotwots_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thewotwots));
+			break;
+		case 78:
+			mURL = Utils.decrypt(Constants.URLThomasAndFriends, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.thomasandfriends);
+			actionBar.setIcon(R.drawable.thomasandfriends);
+			mAnimeSeries.setSeriesName(getString(R.string.thomasandfriends_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.thomasandfriends));
+			break;
+		case 79:
+			mURL = Utils.decrypt(Constants.URLTicketyToc, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.ticketytoc);
+			actionBar.setIcon(R.drawable.ticketytoc);
+			mAnimeSeries.setSeriesName(getString(R.string.ticketytoc_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.ticketytoc));
+			break;
+		case 80:
+			mURL = Utils.decrypt(Constants.URLTinyPlanets, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.tinyplanets);
+			actionBar.setIcon(R.drawable.tinyplanets);
+			mAnimeSeries.setSeriesName(getString(R.string.tinyplanets_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.tinyplanets));
+			break;
+		case 81:
+			mURL = Utils.decrypt(Constants.URLTotoTrouble, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.tototrouble);
+			actionBar.setIcon(R.drawable.tototrouble);
+			mAnimeSeries.setSeriesName(getString(R.string.tototrouble_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.tototrouble));
+			break;
+		case 82:
+			mURL = Utils.decrypt(Constants.URLTrotro, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.trotro);
+			actionBar.setIcon(R.drawable.trotro);
+			mAnimeSeries.setSeriesName(getString(R.string.trotro_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.trotro));
+			break;
+		case 83:
+			mURL = Utils.decrypt(Constants.URLVroomiz, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.vroomiz);
+			actionBar.setIcon(R.drawable.vroomiz);
+			mAnimeSeries.setSeriesName(getString(R.string.vroomiz_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.vroomiz));
+			break;
+		case 84:
+			mURL = Utils.decrypt(Constants.URLWildKratts, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.wildkratts);
+			actionBar.setIcon(R.drawable.wildkratts);
+			mAnimeSeries.setSeriesName(getString(R.string.wildkratts_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.wildkratts));
+			break;
+		case 85:
+			mURL = Utils.decrypt(Constants.URLWoodlies, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.woodlies);
+			actionBar.setIcon(R.drawable.woodlies);
+			mAnimeSeries.setSeriesName(getString(R.string.woodlies_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.woodlies));
+			break;
+		case 86:
+			mURL = Utils.decrypt(Constants.URLWoofy, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.woofy);
+			actionBar.setIcon(R.drawable.woofy);
+			mAnimeSeries.setSeriesName(getString(R.string.woofy_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.woofy));
+			break;
+		case 87:
+			mURL = Utils.decrypt(Constants.URLYummuToonies, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.yummytoonies);
+			actionBar.setIcon(R.drawable.yummytoonies);
+			mAnimeSeries.setSeriesName(getString(R.string.yummytoonies_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.yummytoonies));
+			break;
+		case 88:
+			mURL = Utils.decrypt(Constants.URLZekesPad, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.zekespad);
+			actionBar.setIcon(R.drawable.zekespad);
+			mAnimeSeries.setSeriesName(getString(R.string.zekespad_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.zekespad));
+			break;
+		case 89:
+			mURL = Utils.decrypt(Constants.URLSpiderMan, Utils.getAppSignature(getApplicationContext()));
+			actionBarTitleTextView.setText(R.string.spiderman);
+			actionBar.setIcon(R.drawable.spiderman);
+			mAnimeSeries.setSeriesName(getString(R.string.spiderman_series_name));
+			mAnimeSeries.setSeasonName(getString(R.string.spiderman));
+			break;
+		default: // do nothing
+		} // switch
+		
+		ActionItem source1Item 	
+			= new ActionItem(ID_SOURCE_1, getResources().getString(R.string.action_item_source_1),
+									      getResources().getDrawable(R.drawable.ic_video_source_1));
+		
+		ActionItem source2Item 	
+			= new ActionItem(ID_SOURCE_2, getResources().getString(R.string.action_item_source_2),
+										  getResources().getDrawable(R.drawable.ic_video_source_2));
+		
+        mQuickAction = new QuickAction(this);
+		
+		mQuickAction.addActionItem(source1Item);
+		mQuickAction.addActionItem(source2Item);
+
+		//setup the action item click listener
+		mQuickAction
+				.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+					@Override
+					public void onItemClick(QuickAction quickAction, int pos,
+							int actionId) {
+
+						Intent intent = new Intent(AnimeListActivity.this,
+								VideoViewerActivity.class);
+						
+						switch(actionId)
+						{
+						
+						case ID_SOURCE_1:
+						{
+							intent.putExtra(
+									VideoViewerActivity.KEY_MAIN_VIDEO_URL,
+									mVideoUri1);
+						} // case 
+						
+						break;
+						
+						case ID_SOURCE_2:
+						{
+							intent.putExtra(
+									VideoViewerActivity.KEY_MAIN_VIDEO_URL,
+									mVideoUri2);
+						} // case
+						
+						break;
+						
+						} // switch
+						
+						if (!mInternetConnectionChecker.isConnectedToInternet()) {
+							Toast.makeText(getApplicationContext(), 
+									R.string.episodelist_activity_error, Toast.LENGTH_LONG)
+									.show();
+						} // if
+						else {
+							// start intent to look video
+							startActivity(intent);
+						} // else
+						
+					} // onItemClick
+				});
+
+		// setup on dismiss listener, set the icon back to normal
+		mQuickAction.setOnDismissListener(new PopupWindow.OnDismissListener() {
+			@Override
+			public void onDismiss() {
+				mMoreIv.setImageResource(R.drawable.arrow);
+			}
+		});
+
+		//load Ad before updating Episodes
+		AdRequest adRequestInterstitial = new AdRequest.Builder().build();
+		mInterstitialAd.loadAd(adRequestInterstitial);
+		
+		updateSeries();
+
+	} // onCreate
+	
+	private void updateSeries() {
+		mListView.setAdapter(null);
+		
+		if (mEpisodeListDownloader != null) {
+			mEpisodeListDownloader.cancel(false); // cancel Asynctask politely.
+		} // if
+		
+		mEpisodeListDownloader = new EpisodeListDownloader();
+		mEpisodeListDownloader.execute(mURL);
+	} // updateEpisodes
+	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		if (mAnimeSeries != null) {
+		outState.putString(KEY_EPISODE_NAME, mAnimeSeries.getSeriesName());
+		outState.putString(KEY_SEASON_NAME, mAnimeSeries.getSeasonName());
+		} // if
+	} // onSaveInstanceState
+
+	@Override
+	protected void onDestroy() {
+		if (mEpisodeListDownloader != null) {
+			mEpisodeListDownloader.cancel(false); // cancel Asynctask politely,
+													// in onDestroy.
+		} // if
+		
+		if (mAdView != null)
+		{
+			mAdView.destroy();
+		} // if
+		
+	    super.onDestroy();
+	} // onDestroy
+	
+	
+	
+	@Override
+	protected void onResume() {
+		
+		super.onResume();
+		
+		if (mAdView != null)
+		{
+			mAdView.resume();
+		} // if
+		
+	} // onResume
+	
+	@Override
+	protected void onPause() {
+		
+		if (mAdView != null)
+		{
+			mAdView.pause();
+		} // if
+		
+		super.onPause();
+	} // onPause
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.episode_list_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:  // this is for "up" button which is the action bar button
+    		if (NavUtils.getParentActivityName(this) != null) {
+    			//NavUtils.navigateUpFromSameTask(this); // to return to parent activity
+    			
+    			onBackPressed(); // solved the problem
+    			
+    		} // if
+    		
+    		return true;
+		case R.id.menu_item_refresh_list:
+			updateSeries();
+			return true;
+		case R.id.episode_list_menu_item_share:
+			shareApp();
+			return true;
+		case R.id.episode_list_menu_item_about:
+			showAbout();
+			return true;
+		case R.id.episode_list_menu_item_rate:
+			rateApp();
+			return true;
+		case R.id.episode_list_menu_item_other_apps:
+			showOtherApps();
+			return true;
+		case R.id.episode_list_menu_item_clear_cache:
+			clearCache();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		} // switch
+	} // onOptionsItemSelected
+
+	private void clearCache() {
+		FileCache fileCache = new FileCache(this);
+		fileCache.clear();
+		
+		Toast.makeText(this, R.string.cache_cleared, Toast.LENGTH_SHORT).show();
+	} // clearCache
+
+	private void showOtherApps() {
+		Uri appUri = Uri.parse("market://search?q=" + getString(R.string.other_apps_query));
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+
+		if (isIntentSafe) {
+			startActivity(i);
+		} // if
+		else {
+			Toast.makeText(getApplicationContext(), R.string.play_store_not_reached,
+					Toast.LENGTH_LONG).show();
+		} // else
+	} // showOtherApps
+
+	private void rateApp() {
+		Uri appUri = Uri.parse("market://details?id=" + APP_PNAME);
+		Intent i = new Intent(Intent.ACTION_VIEW, appUri);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+
+		if (isIntentSafe) {
+			
+			//disable the rate dialog.
+			SharedPreferences prefs = getSharedPreferences("apprater", 0);
+			SharedPreferences.Editor editor = prefs.edit();
+			
+			if (editor != null) {
+                editor.putBoolean("dontshowagain", true);
+                editor.commit();
+            } // if
+			
+			startActivity(i);
+		} // if
+		else {
+			Toast.makeText(getApplicationContext(), R.string.play_store_not_reached,
+					Toast.LENGTH_LONG).show();
+		} // else
+
+	} // rateApp
+
+	private void shareApp() {
+		Intent i = new Intent(Intent.ACTION_SEND);
+
+		// check that there is at least one activity to perform this intent
+
+		PackageManager pm = getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(i, 0);
+		boolean isIntentSafe = activities.size() > 0;
+		
+		if (isIntentSafe) 
+		{
+
+			String shareString = (new StringBuilder(
+					getString(R.string.share_string)))
+					.append(" " + getString(R.string.play_store_app_uri))
+					.append(APP_PNAME).toString();
+
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_TEXT, shareString);
+			i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+			i = Intent.createChooser(i, getString(R.string.share_app_chooser));
+			startActivity(i);
+		} 
+		else 
+		{
+			Toast.makeText(getApplicationContext(), R.string.sharing_error,
+					Toast.LENGTH_LONG).show();
+		}
+	} // shareApp
+	
+	private void showAbout() {
+		AboutDialog aboutDialog = new AboutDialog();
+		aboutDialog.onAboutClick(this);
+	} // showAbout
+	
+	
+	private void displayInterstitial()
+	{
+		//display interstitial with the probability of 80%
+		if (Math.random() >= 0.2) {
+			
+			if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+				mInterstitialAd.show();
+			} // if
+			
+		} // if
+		
+	} // displayInterstitial
+	
+	@Override
+	public void onBackPressed() { 
+		
+		super.onBackPressed();
+		
+	} // onBackPressed
+
+	private class EpisodeListDownloader extends
+			AsyncTask<String, Integer, ArrayList<HashMap<String, String>>> {
+
+		private ArrayList<HashMap<String, String>> episodeList;
+		private ListViewAdapter adapter;
+		private HashMap<String, String> episode = new HashMap<String, String>();
+
+		@Override
+		protected ArrayList<HashMap<String, String>> doInBackground(
+				String... urls) {
+
+			XMLParser parser = new XMLParser();
+			boolean isURLValid = false;
+			
+			
+			HttpURLConnection con = null;
+			
+			try {
+				HttpURLConnection.setFollowRedirects(false);
+				// note : you may also need
+				// HttpURLConnection.setInstanceFollowRedirects(false)
+
+				con = (HttpURLConnection) new URL(
+						urls[0]).openConnection();
+				con.setRequestMethod("GET");
+				
+				if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+					isURLValid = true;
+				} // if
+				else {
+					isURLValid = false;
+				} // else
+			} catch (Exception e) {
+				isURLValid = false;
+			} // catch
+			finally {
+				if (con != null) {
+					con.disconnect();
+				} // if
+			} // finally
+			
+			if (isURLValid) {
+			
+			String xml = parser.getXmlFromUrl(urls[0]); // getting XML from mURL
+														// || if bandwidth is
+														// low -> returns null
+			
+			//</begin> determines the end of xml file
+			
+			if (xml == null || ! xml.contains("</begin>")) {
+				// AnimeListActivity.this.finish(); // finish the activity, for
+				// convenience only
+				loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+				episodeList = null;
+			} else {
+
+				episodeList = new ArrayList<HashMap<String, String>>();
+				
+				Document doc = parser.getDomElement(xml); // getting DOM element
+
+				NodeList nl = doc.getElementsByTagName(Constants.KEY_EPISODE);
+
+				// looping through all episode nodes <episode>;
+				for (int i = 0; i < nl.getLength(); i++) {
+					// creating new HashMap
+					HashMap<String, String> map = new HashMap<String, String>();
+					Element e = (Element) nl.item(i);
+					// adding each child node to HashMap key =&gt; value
+					map.put(Constants.KEY_ID,
+							parser.getValue(e, Constants.KEY_ID));
+					map.put(Constants.KEY_TITLE,
+							mAnimeSeries.getSeriesName() +
+							parser.getValue(e, Constants.KEY_TITLE)); // string res + " " + episode number
+					map.put(Constants.KEY_SEASON,
+							parser.getValue(e, Constants.KEY_SEASON) +
+							mAnimeSeries.getSeasonName()); // season number + " "+ string res
+					map.put(Constants.KEY_DURATION,
+							parser.getValue(e, Constants.KEY_DURATION));
+					map.put(Constants.KEY_THUMB_URL,
+							parser.getValue(e, Constants.KEY_THUMB_URL));
+					map.put(Constants.KEY_VIDEO_URL,
+							parser.getValue(e, Constants.KEY_VIDEO_URL));
+					map.put(Constants.KEY_VIDEO_URL2,
+							parser.getValue(e, Constants.KEY_VIDEO_URL2));
+
+					// adding HashMap to ArrayList
+					episodeList.add(map);
+				}
+			} // else
+			
+			} // if
+			
+			else {
+				if (mInternetConnectionChecker.isConnectedToInternet()) {
+					loadingErrorDialogMessage = getString(R.string.cartoon_activity_error);
+				} // if
+				else {
+					loadingErrorDialogMessage = getString(R.string.loading_error_dialog_message);
+				} // else
+				
+				episodeList = null;
+			} // else
+			
+			return episodeList;
+		} // doInBackGround
+
+		@Override
+		protected void onPreExecute() {
+			// activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+			mProgressBar.setVisibility(View.VISIBLE);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<HashMap<String, String>> result) {
+			
+			mProgressBar.setVisibility(View.GONE);
+
+			if (result != null) {
+				
+				// Getting adapter by passing xml data ArrayList
+				adapter = new ListViewAdapter(AnimeListActivity.this, result);
+				mListView.setAdapter(adapter);
+
+				// Click event for single mListView row
+				mListView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int position, long id) {
+						
+						episode = episodeList.get(position);
+						
+						mSelectedRow = position; //set the selected row	
+						
+						mQuickAction.show(view);
+						mQuickAction.setAnimStyle(QuickAction.ANIM_GROW_FROM_RIGHT);
+						
+						//change the right arrow icon to selected state 			
+						mMoreIv = (ImageView) view.findViewById(R.id.image_view_more);
+						mMoreIv.setImageResource(R.drawable.arrow);
+						
+						
+						mVideoUri1 = Uri.parse(episode.get(Constants.KEY_VIDEO_URL));
+						mVideoUri2 = Uri.parse(episode.get(Constants.KEY_VIDEO_URL2));
+						
+					} // onItemClick
+				});
+				
+				//everything is ok, so ads can be loaded
+				
+				displayInterstitial();
+				
+				if (mAdView != null && mAdRequestBanner != null)
+				{
+					mAdView.loadAd(mAdRequestBanner);
+				} // if
+				
+			} // if
+			else { 
+				mListView.setAdapter(null);
+				loadingErrorDialog = new AlertDialog.Builder(AnimeListActivity.this);
+				loadingErrorDialog.setTitle(R.string.loading_error_dialog_title);
+				loadingErrorDialog.setMessage(loadingErrorDialogMessage);
+				loadingErrorDialog.setIcon(R.drawable.ic_action_warning);
+				
+				loadingErrorDialog.setNegativeButton(R.string.loading_error_dialog_cancel_button_title, 
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								onBackPressed();
+							} // onClick
+						});
+				
+				loadingErrorDialog.setPositiveButton(R.string.loading_error_dialog_retry_button_title, 
+						new OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+								updateSeries();
+							} // onClick
+						});
+				
+				loadingErrorDialog.setOnKeyListener(new OnKeyListener() {
+
+					@Override
+					public boolean onKey(DialogInterface dialog, int keyCode,
+							KeyEvent event) {
+						if (keyCode == KeyEvent.KEYCODE_BACK) {
+							
+							dialog.dismiss();
+							onBackPressed();
+						}
+						return true;
+					}
+				});
+				
+				AlertDialog dialog = loadingErrorDialog.create();
+				dialog.setCancelable(true);
+				dialog.setCanceledOnTouchOutside(false);
+				dialog.show();
+				
+			} // else
+			
+			super.onPostExecute(result);
+		} // onPostExecute
+
+	} // class EpisodeListDownloader
+
+} // class AnimeListActivity

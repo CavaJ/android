@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="350.0dip"
+        android:layout_height="350.0dip" >
+
+        
+            <ImageView
+                android:id="@+id/logo_imageview"
+                android:layout_width="120.0dip"
+                android:layout_height="120.0dip"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="38.0dip"
+                android:src="@drawable/ic_launcher_about_dialog" />
+            
+            <TextView
+                android:id="@+id/app_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logo_imageview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dip"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+            
+            <TextView
+                android:id="@+id/developer_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_name_textview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dip"
+                android:gravity="center_vertical"
+                android:text="@string/about_developer"
+                android:textColor="@android:color/white" /> 
+            
+            <!--  android:textColor="#ffa39285" -->
+            
+            <TextView
+                android:id="@+id/developer_email_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/developer_textview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5.0dip"
+                android:layout_marginBottom="20.0dip"
+                android:gravity="center_vertical"
+                android:text="@string/about_developer_email"
+                android:textColor="@android:color/white" />
+            
+             <TextView
+                android:id="@+id/version_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/developer_email_textview"
+                android:layout_centerHorizontal="true"
+                android:text="@string/app_version"
+                android:textColor="@android:color/white" />
+            
+            <TextView
+                android:id="@+id/copyright_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/version_textview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5.0dip"
+                android:text="@string/copyright"
+                android:textColor="@android:color/white" />
+            
+    </RelativeLayout>
+
+</LinearLayout>
