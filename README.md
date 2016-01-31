@@ -35,7 +35,7 @@ previous activity.
 
 public class AnimeListActivity extends ActionBarActivity {
 
-    		//Some initializations
+    	//Some initializations
 		
 		switch (position) {
 		case 0:
