@@ -65,4 +65,6 @@ previous activity.
 		//Some other stuff
 **}** 
 
+Play store url of my applications: https://play.google.com/store/apps/developer?id=AnimeSoft
+
 More sample projects will be added. Stay tuned!
